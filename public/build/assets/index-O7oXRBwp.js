@@ -1,0 +1,1 @@
+import{d as r}from"./app-BL-A_wWN.js";const a=r.create({withCredentials:!0,withXSRFToken:!0,headers:{Accept:"application/json","X-Request-With":"XMLHttpRequest"}}),s=a,c={getSubjectsTeachers(e=1,t=""){return s.get(route("subjects-teachers.index",{page:e,search:t}))},searchClassrooms(e,t){return s.get(route("search-classrooms",{specialty_id:e,semester_id:t}))}};export{c as S};

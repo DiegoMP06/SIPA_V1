@@ -1,0 +1,1 @@
+import{j as i,a as o}from"./app-BL-A_wWN.js";function n({children:t,name:e}){return i.jsx(o,{href:route(e),className:"px-4 py-2 bg-indigo-700 text-white font-bold inline-block",children:t})}export{n as N};

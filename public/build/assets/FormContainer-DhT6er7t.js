@@ -1,0 +1,1 @@
+import{j as a}from"./app-BL-A_wWN.js";function i({children:o,handleSubmit:r,className:m="",...t}){return a.jsx("form",{onSubmit:r,className:"my-16 max-w-4xl bg-white shadow mx-auto p-6 grid grid-cols-1 gap-4"+m,...t,children:o})}export{i as F};

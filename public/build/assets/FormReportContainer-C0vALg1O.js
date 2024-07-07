@@ -1,0 +1,1 @@
+import{j as o}from"./app-BL-A_wWN.js";function i({children:r,handleSubmit:s,className:a="",...m}){return o.jsx("div",{className:"my-16 px-4 max-w-4xl mx-auto",children:o.jsx("form",{className:"bg-white shadow p-6 grid grid-cols-1 gap-6"+a,...m,onSubmit:s,children:r})})}export{i as F};
