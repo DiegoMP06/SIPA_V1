@@ -12,16 +12,18 @@ class HomeController extends Controller
     /**
      * Handle the incoming request.
      */
-    public function __invoke(Request $request)
+    public function __invoke()
     {
-        $canRegister = Semester::canRegister();
-        $canReRegister = Semester::canReRegister();
         $canPay = Period::canPay();
+        $canRegister = Period::canRegister() && Semester::canReRegistration();
+        $canExtraordinaryExam = Period::canExtraordinaryExam();
+        $canIntersemesterAppeal = Period::canIntersemesterAppeal();
 
         return Inertia::render('Home', [
-            'canRegister' => $canRegister,
-            'canReRegister' => $canReRegister,
             'canPay' => $canPay,
+            'canRegister' => $canRegister,
+            'canExtraordinaryExam' => $canExtraordinaryExam,
+            'canIntersemesterAppeal' => $canIntersemesterAppeal,
         ]);
     }
 }

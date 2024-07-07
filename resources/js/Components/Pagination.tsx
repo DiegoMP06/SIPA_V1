@@ -4,9 +4,11 @@ import { useMemo } from "react";
 
 type PaginationProps = {
     pagination: PaginateProps;
+    withFunction?: boolean;
+    handlePaginate?: (page: number) => void;
 }
 
-export default function Pagination({pagination} : PaginationProps) {
+export default function Pagination({pagination, withFunction = false, handlePaginate} : PaginationProps) {
     const BLACK_LIST = ['pagination.previous', 'pagination.next'];
 
     const links = useMemo(() => pagination.links.filter(link => !BLACK_LIST.includes(link.label)), [pagination.links]);
@@ -14,7 +16,46 @@ export default function Pagination({pagination} : PaginationProps) {
     const firsPage = useMemo(() => pagination.current_page === 1, [pagination.current_page])
     const lastPage = useMemo(() => pagination.current_page === pagination.last_page, [pagination.current_page, pagination.last_page])
 
-    return paginateVisible && (
+    return paginateVisible && ((withFunction && handlePaginate) ? (
+        <div className="flex justify-between items-center my-16 gap-6 flex-col md:flex-row">
+            <p className="text-gray-700 font-bold text-lg">
+                Página { pagination.current_page } de { pagination.last_page } ({ pagination.per_page } Registros Por Pagina)
+            </p>
+
+            <nav className="flex gap-2">
+                { !firsPage && (
+                    <>
+                        <button type="button" onClick={() => handlePaginate(1)} className="bg-indigo-700 size-10 grid place-content-center text-white font-bold hover:bg-indigo-600 transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" className="size-8" viewBox="0 0 24 24"><path fill="currentColor" d="m4.836 12l6.207 6.207l1.414-1.414L7.664 12l4.793-4.793l-1.414-1.414zm5.65 0l6.207 6.207l1.414-1.414L13.314 12l4.793-4.793l-1.414-1.414z"/></svg>
+                        </button>
+
+                        <button type="button" onClick={() => handlePaginate(pagination.current_page - 1)} className="bg-indigo-700 size-10 grid place-content-center text-white font-bold hover:bg-indigo-600 transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" className="size-6" viewBox="0 0 24 24"><path fill="currentColor" d="M16 22L6 12L16 2l1.775 1.775L9.55 12l8.225 8.225z"/></svg>
+                        </button>
+                    </>
+                ) }
+
+
+                { links.map(link => (
+                   <button type="button" onClick={() => handlePaginate(Number(link.label))} key={link.label} className="hidden lg:grid bg-indigo-700 size-10 place-content-center text-white font-bold hover:bg-indigo-600 transition-colors">
+                        { link.label }
+                    </button>
+                )) }
+
+                { !lastPage && (
+                    <>
+                        <button type="button" onClick={() => handlePaginate(pagination.current_page + 1)} className="bg-indigo-700 size-10 grid place-content-center text-white font-bold hover:bg-indigo-600 transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" className="size-6" viewBox="0 0 24 24"><path fill="currentColor" d="M8.025 22L6.25 20.225L14.475 12L6.25 3.775L8.025 2l10 10z"/></svg>
+                        </button>
+
+                        <button type="button" onClick={() => handlePaginate(pagination.last_page)} className="bg-indigo-700 size-10 grid place-content-center text-white font-bold hover:bg-indigo-600 transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" className="size-8" viewBox="0 0 24 24"><path fill="currentColor" d="m19.164 12l-6.207-6.207l-1.414 1.414L16.336 12l-4.793 4.793l1.414 1.414zm-5.65 0L7.307 5.793L5.893 7.207L10.686 12l-4.793 4.793l1.414 1.414z"/></svg>
+                        </button>
+                    </>
+                ) }
+            </nav>
+        </div>
+    ) : (
         <div className="flex justify-between items-center my-16 gap-6 flex-col md:flex-row">
             <p className="text-gray-700 font-bold text-lg">
                 Página { pagination.current_page } de { pagination.last_page } ({ pagination.per_page } Registros Por Pagina)
@@ -53,5 +94,5 @@ export default function Pagination({pagination} : PaginationProps) {
                 ) }
             </nav>
         </div>
-    )
+    ))
 }

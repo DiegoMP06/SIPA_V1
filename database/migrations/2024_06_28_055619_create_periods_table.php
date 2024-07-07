@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('end_month');
             $table->year('end_year');
             $table->boolean('active')->default(false);
+            $table->foreignId('type_pay_id')->nullable()->constrained()->nullOnDelete();
             $table->timestamps();
         });
     }

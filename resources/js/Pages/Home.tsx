@@ -3,12 +3,13 @@ import { PageProps } from '@/types';
 import DGETIDARK from '@/Assets/dgeti_dark.webp';
 
 type HomeProps = {
-    canRegister: boolean;
-    canReRegister: boolean;
     canPay: boolean;
+    canRegister: boolean,
+    canExtraordinaryExam: boolean,
+    canIntersemesterAppeal: boolean,
 }
 
-export default function Welcome({ auth, canReRegister, canRegister, canPay }: PageProps<HomeProps>) {
+export default function Welcome({ auth, canRegister, canPay, canExtraordinaryExam, canIntersemesterAppeal }: PageProps<HomeProps>) {
 
     return (
         <>
@@ -171,15 +172,21 @@ export default function Welcome({ auth, canReRegister, canRegister, canPay }: Pa
 
                             { (canPay && !auth.user) ? (
                                 <nav className="flex flex-col gap-6">
-                                    { canReRegister &&
+                                    { canRegister &&
                                         <Link href={route('re-registration')} className="bg-indigo-100 hover:bg-indigo-200 text-center font-bold text-indigo-950 px-4 py-2 uppercase">
-                                            Generar Ficha de Reinscripcion
+                                            Generar Ficha de Inscripción/Reinscripción
                                         </Link>
                                     }
 
-                                    { canRegister &&
-                                        <Link href={route('inscription')} className="bg-indigo-100 hover:bg-indigo-200 text-center font-bold text-indigo-950 px-4 py-2 uppercase">
-                                            Generar Ficha de Inscripcion (Nuevo Ingreso)
+                                    { canExtraordinaryExam &&
+                                        <Link href={route('extraordinary-exam')} className="bg-indigo-100 hover:bg-indigo-200 text-center font-bold text-indigo-950 px-4 py-2 uppercase">
+                                            Generar Ficha de Examen Extraordinario
+                                        </Link>
+                                    }
+
+                                    { canIntersemesterAppeal &&
+                                        <Link href={route('intersemester-appeal')} className="bg-indigo-100 hover:bg-indigo-200 text-center font-bold text-indigo-950 px-4 py-2 uppercase">
+                                            Generar Ficha de Recursamiento Intersemestral
                                         </Link>
                                     }
 

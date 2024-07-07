@@ -19,6 +19,7 @@ class Period extends Model
         'end_month',
         'end_year',
         'active',
+        'type_pay_id',
     ];
 
     public static function canPay() : bool
@@ -29,8 +30,40 @@ class Period extends Model
         return $activePeriod ? true : false;
     }
 
+    public static function canRegister() : bool
+    {
+        $periodRegister = self::where('active', true)
+            ->where('type_pay_id', 1)
+            ->first();
+
+        return $periodRegister ? true : false;
+    }
+
+    public static function canExtraordinaryExam() : bool
+    {
+        $periodRegister = self::where('active', true)
+            ->where('type_pay_id', 2)
+            ->first();
+
+        return $periodRegister ? true : false;
+    }
+
+    public static function canIntersemesterAppeal() : bool
+    {
+        $periodRegister = self::where('active', true)
+            ->where('type_pay_id', 3)
+            ->first();
+
+        return $periodRegister ? true : false;
+    }
+
     public function pays()
     {
         return $this->hasMany(Pay::class);
+    }
+
+    public function typePay()
+    {
+        return $this->belongsTo(TypePay::class);
     }
 }

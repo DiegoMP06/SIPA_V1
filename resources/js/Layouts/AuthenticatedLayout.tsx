@@ -35,6 +35,14 @@ export default function Authenticated({ user, header, children }: AuthenticatedL
                                 <NavLink href={route('semesters.index')} active={route().current('semesters.index')}>
                                     Semestres
                                 </NavLink>
+
+                                <NavLink href={route('subjects.index')} active={route().current('subjects.index')}>
+                                    Materias
+                                </NavLink>
+
+                                <NavLink href={route('teachers.index')} active={route().current('teachers.index')}>
+                                    Profesores
+                                </NavLink>
                             </div>
                         </div>
 
@@ -69,6 +77,7 @@ export default function Authenticated({ user, header, children }: AuthenticatedL
                                         <Dropdown.Link href={route('profile.edit')}>
                                             Perfil
                                         </Dropdown.Link>
+                                        
                                         <Dropdown.Link href={route('logout')} method="post" as="button">
                                             Cerrar Sesión
                                         </Dropdown.Link>
@@ -90,6 +99,7 @@ export default function Authenticated({ user, header, children }: AuthenticatedL
                                         strokeWidth="2"
                                         d="M4 6h16M4 12h16M4 18h16"
                                     />
+
                                     <path
                                         className={showingNavigationDropdown ? 'inline-flex' : 'hidden'}
                                         strokeLinecap="round"
@@ -112,6 +122,14 @@ export default function Authenticated({ user, header, children }: AuthenticatedL
                         <ResponsiveNavLink href={route('semesters.index')} active={route().current('semesters.index')}>
                             Semestres
                         </ResponsiveNavLink>
+
+                        <ResponsiveNavLink href={route('subjects.index')} active={route().current('subjects.index')}>
+                            Materias
+                        </ResponsiveNavLink>
+
+                        <ResponsiveNavLink href={route('teachers.index')} active={route().current('teachers.index')}>
+                            Profesores
+                        </ResponsiveNavLink>
                     </div>
 
                     <div className="pt-4 pb-1 border-t border-gray-200">
@@ -128,6 +146,7 @@ export default function Authenticated({ user, header, children }: AuthenticatedL
                             <ResponsiveNavLink href={route('profile.edit')}>
                                 Perfil
                             </ResponsiveNavLink>
+
                             <ResponsiveNavLink method="post" href={route('logout')} as="button">
                                 Cerrar Sesión
                             </ResponsiveNavLink>

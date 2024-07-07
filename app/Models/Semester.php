@@ -9,20 +9,9 @@ class Semester extends Model
 {
     use HasFactory;
 
-    public static function canRegister() : bool
+    public static function canReRegistration() : bool
     {
-        $firstSemester = self::where('semester', 1)
-            ->first();
-
-        return $firstSemester->active ? true : false;
-    }
-
-    public static function canReRegister() : bool
-    {
-        $activeSemesters = self::where('active', true)
-            ->where('semester', '!=', 1)
-            ->get();
-
-        return count($activeSemesters) > 1 ? true : false;
+        $activeSemesters = self::where('active', true)->get()->count();
+        return $activeSemesters > 1 ? true : false;
     }
 }

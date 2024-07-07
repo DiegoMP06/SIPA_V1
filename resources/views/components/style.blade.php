@@ -70,7 +70,7 @@
 
     .table__heading {
         position: absolute;
-        top: 80px;
+        top: 55px;
         left: 10px;
         font-size: 16px;
         font-weight: bold;
@@ -86,17 +86,23 @@
         transform: translateY(-100%)
     }
 
-    .table tr {
+    tr {
         border: 1px solid #7c7c7c;
     }
 
     .table th,
     .table td {
         border: 1px solid #7c7c7c;
-        padding: 4px 3px;
+        padding: 4px 6px;
         text-align: center;
         text-transform: uppercase;
-        font-size: 14px
+        font-size: 11px;
+    }
+
+    .pay-normal .table th,
+    .pay-normal .table td {
+        font-size: 12px;
+        padding: 6px 3px;
     }
 
     .table__banco {

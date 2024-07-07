@@ -12,7 +12,6 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('pays', function (Blueprint $table) {
-            $table->foreignId('type_pay_id')->nullable()->constrained()->nullOnDelete();
             $table->foreignId('specialty_id')->nullable()->constrained()->nullOnDelete();
             $table->foreignId('shift_id')->nullable()->constrained()->nullOnDelete();
             $table->foreignId('period_id')->nullable()->constrained()->nullOnDelete();

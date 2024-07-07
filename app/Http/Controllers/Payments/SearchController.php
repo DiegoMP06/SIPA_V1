@@ -7,6 +7,7 @@ use Inertia\Inertia;
 use App\Models\Period;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\TypePay;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\ValidationException;
 
@@ -19,15 +20,11 @@ class SearchController extends Controller
      */
     public function index(Request $request)
     {
-        return Inertia::render('Search');
-    }
+        $typePays = TypePay::all();
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        return Inertia::render('Search', [
+            'typePays' => $typePays,
+        ]);
     }
 
     /**
@@ -37,14 +34,17 @@ class SearchController extends Controller
     {
         $data = $request->validate([
             'search' => 'required|string',
+            'type_pay_id' => 'required|numeric|exists:type_pays,id',
         ]);
 
         $this->search = $data['search'];
-        $periodActive = Period::where('active', true)->first();
+        $periodActive = Period::where('active', true)
+            ->where('type_pay_id', $data['type_pay_id'])
+            ->first();
 
         if(!$periodActive) {
             throw ValidationException::withMessages([
-                'search' => 'El periodo actual no esta activo',
+                'search' => 'El Periodo de la Ficha no esta activo',
             ]);
         }
 
@@ -61,51 +61,38 @@ class SearchController extends Controller
             ]);
         }
 
-        return redirect()->intended(route('search.show', $pay, false));
+        return redirect()->intended(route('search.show', ['type_pay' => $data['type_pay_id'], 'curp'=> $pay->curp], false));
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Pay $pay)
+    public function show(TypePay $typePay, String $curp)
     {
-        $semester = $pay->semester;
-        $shift = $pay->shift;
-        $specialty = $pay->specialty;
-        $typePay = $pay->typePay;
-        $period = $pay->period;
+        $period = $typePay->periods()->where('active', true)->first();
 
-        return Inertia::render('ShowPay', [
-            'pay' => $pay,
+        if(!$period) {
+            return redirect()->intended(route('search'));
+        }
+
+        $pays = $period->pays()->where('curp', $curp)
+            ->with('semester', 'shift', 'specialty', 'extraordinaryPayment')
+            ->get();
+
+        if($pays->count() === 0) {
+            return redirect()->intended(route('search'));
+        }
+
+        if($typePay->id !== 1) {
+            foreach($pays as $pay) {
+                $pay->extraordinaryPayment->load('subject', 'teacher');
+            }
+        }
+
+        return Inertia::render('ShowPays', [
             'period' => $period,
-            'semester' => $semester,
-            'shift' => $shift,
-            'specialty' => $specialty,
-            'typePay' => $typePay
+            'typePay' => $typePay,
+            'pays' => $pays,
         ]);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Pay $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Pay $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Pay $id)
-    {
-        //
     }
 }

@@ -11,6 +11,10 @@ export type PageProps<T extends Record<string, unknown> = Record<string, unknown
     };
 };
 
+type ObjType = {
+    [key: string]: unknown;
+}
+
 export type PaginateProps<T extends Record<string, unknown> = Record<string, unknown>> = {
     current_page: number,
     data: T[];
@@ -31,32 +35,32 @@ export type PaginateProps<T extends Record<string, unknown> = Record<string, unk
     total: number;
 };
 
-export type SpecialtyType = {
+export type SpecialtyType <T extends Record<string, unknown> = Record<string, unknown>> = {
     id: number;
     specialty: string;
     code: string;
     created_at: string;
     updated_at: string;
-}
+} & T & ObjType;
 
-export type ShiftType = {
+export type ShiftType<T extends Record<string, unknown> = Record<string, unknown>> = {
     id: number;
     shift: string;
     code: string;
     created_at: string;
     updated_at: string;
-}
+} & T & ObjType;
 
-export type SemesterType = {
+export type SemesterType<T extends Record<string, unknown> = Record<string, unknown>> = {
     id: number;
     semester: string;
     group: string;
     active: 1 | 0;
     created_at: string;
     updated_at: string;
-}
+} & T & ObjType;
 
-export type PeriodType = {
+export type PeriodType<T extends Record<string, unknown> = Record<string, unknown>> = {
     id?: number;
     start_month: string;
     start_year: string;
@@ -67,35 +71,69 @@ export type PeriodType = {
     account_number: string;
     interbank_code: string;
     amount: number;
+    type_pay_id: number;
     created_at?: string;
     updated_at?: string;
-};
+} & T & ObjType;
 
-export type TypePayType = {
+export type TypePayType<T extends Record<string, unknown> = Record<string, unknown>> = {
     id?: number;
     type: string;
     code: string;
     created_at?: string;
     updated_at?: string;
-}
+} & T & ObjType;
 
-export type PayType = {
+export type PayType<T extends Record<string, unknown> = Record<string, unknown>> = {
     id?: number;
     name: string;
     mother_last_name: string;
     father_last_name: string;
     code: string;
     curp: string;
-    type_pay_id?: number;
     specialty_id?: number;
     shift_id?: number;
     period_id?: number;
     semester_id?: number;
-}
+    created_at?: string;
+    updated_at?: string;
+} & T & ObjType;
 
-export type PaymentType = PayType & {
-    type_pay: TypePayType;
-    specialty: SpecialtyType;
-    shift: ShiftType;
-    semester: SemesterType;
-}
+export type SubjectType<T extends Record<string, unknown> = Record<string, unknown>> = {
+    id?: number;
+    subject:string;
+    active: 1 | 0;
+    created_at?: string;
+    updated_at?: string;
+} & T & ObjType;
+
+export type ClassroomType<T extends Record<string, unknown> = Record<string, unknown>> = {
+    id?: number;
+    specialty_id: SpecialtyType['id'];
+    semester_id: SemesterType['id'];
+    subject_id?: SubjectType['id'];
+    created_at?: string;
+    updated_at?: string;
+} & T & ObjType;
+
+export type TeacherType<T extends Record<string, unknown> = Record<string, unknown>> = {
+    id?: number;
+    name: string;
+    mother_last_name: string;
+    father_last_name: string;
+    email: string;
+    phone: string;
+    active: 1 | 0;
+    created_at?: string;
+    updated_at?: string;
+} & T & ObjType;
+
+export type ExtraordinaryPaymentType<T extends Record<string, unknown> = Record<string, unknown>> = {
+    id?: number;
+    pay_id: number;
+    subject_id: number;
+    teacher_id: number;
+    created_at?: string;
+    updated_at?: string;
+} & T & ObjType;
+

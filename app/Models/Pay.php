@@ -19,13 +19,16 @@ class Pay extends Model
         "shift_id",
         "specialty_id",
         "period_id",
-        "type_pay_id",
     ];
 
-    public function isActive()
+    public function isActive() : bool
     {
-        $currentPeriod = Period::where('active', true)->first();
-        return $currentPeriod && $this->period_id === $currentPeriod->id;
+        return $this->period->active ? true : false;
+    }
+
+    public function extraordinaryPayment()
+    {
+        return $this->hasOne(ExtraordinaryPayment::class);
     }
 
     public function semester()
@@ -46,10 +49,5 @@ class Pay extends Model
     public function period()
     {
         return $this->belongsTo(Period::class);
-    }
-
-    public function typePay()
-    {
-        return $this->belongsTo(TypePay::class);
     }
 }

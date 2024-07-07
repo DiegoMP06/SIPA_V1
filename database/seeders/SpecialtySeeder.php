@@ -16,14 +16,14 @@ class SpecialtySeeder extends Seeder
     {
         DB::table('specialties')->insert([
             'specialty' => 'Administración de Recursos Humanos',
-            'code' => 'ADRH',
+            'code' => 'ARH',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);
 
         DB::table('specialties')->insert([
             'specialty' => 'Contabilidad',
-            'code' => strtoupper('Conta'),
+            'code' => 'C',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);
@@ -44,14 +44,14 @@ class SpecialtySeeder extends Seeder
 
         DB::table('specialties')->insert([
             'specialty' => 'Programación',
-            'code' => strtoupper('Progra'),
+            'code' => 'P',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);
 
         DB::table('specialties')->insert([
             'specialty' => 'Ventas',
-            'code' => strtoupper('Ventas'),
+            'code' => 'V',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);

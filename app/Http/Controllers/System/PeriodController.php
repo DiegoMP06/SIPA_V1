@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\System;
 
-use App\Models\Pay;
 use Inertia\Inertia;
 use App\Models\Period;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\TypePay;
 
 class PeriodController extends Controller
 {
@@ -15,7 +15,7 @@ class PeriodController extends Controller
      */
     public function index()
     {
-        $periods = Period::orderBy('id', 'DESC')->paginate(20);
+        $periods = Period::orderBy('id', 'DESC')->with('typePay')->paginate(20);
 
         return Inertia::render('Dashboard', [
             'periods' => $periods
@@ -27,7 +27,11 @@ class PeriodController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Periods/Create');
+        $typePays = TypePay::all();
+
+        return Inertia::render('Periods/Create', [
+            'typePays' => $typePays
+        ]);
     }
 
     /**
@@ -40,10 +44,11 @@ class PeriodController extends Controller
             'account_number' => ['required', 'string', 'max:100'],
             'interbank_code' => ['required', 'numeric', 'digits:18'],
             'amount' => ['required', 'numeric', 'min:1'],
-            'start_month' => 'required|string|max:100',
-            'start_year' => 'required|numeric|digits:4',
-            'end_month' => 'required|string|max:100',
-            'end_year' => 'required|numeric|digits:4',
+            'start_month' => ['required', 'string', 'max:100'],
+            'start_year' => ['required', 'numeric', 'digits:4'],
+            'end_month' => ['required', 'string', 'max:100'],
+            'end_year' => ['required', 'numeric', 'digits:4'],
+            'type_pay_id' => ['required', 'numeric', 'exists:type_pays,id'],
         ]);
 
         $period = Period::create($data);
@@ -64,12 +69,11 @@ class PeriodController extends Controller
             ->with('semester')
             ->with('shift')
             ->with('specialty')
-            ->with('typePay')
             ->orderBy('id', 'DESC')
             ->paginate(50);
 
         return Inertia::render('Periods/Show', [
-            'period' => $period,
+            'period' => $period->load('typePay'),
             'payments' => $payments,
             'search' => $request->search ?? '',
             'page' => $request->page ?? 1,
@@ -81,8 +85,11 @@ class PeriodController extends Controller
      */
     public function edit(Period $period)
     {
+        $typePays = TypePay::all();
+
         return Inertia::render('Periods/Edit', [
-            'period' => $period
+            'period' => $period,
+            'typePays' => $typePays,
         ]);
     }
 
@@ -96,11 +103,11 @@ class PeriodController extends Controller
             'account_number' => ['string', 'max:100'],
             'interbank_code' => ['numeric', 'digits:18'],
             'amount' => ['numeric', 'min:1'],
-            'start_month' => 'string|max:100',
-            'start_year' => 'numeric|digits:4',
-            'end_month' => 'string|max:100',
-            'end_year' => 'numeric|digits:4',
-            'active' => 'boolean',
+            'start_month' => ['string', 'max:100'],
+            'start_year' => ['numeric', 'digits:4'],
+            'end_month' => ['string', 'max:100'],
+            'end_year' => ['numeric', 'digits:4'],
+            'active' => ['boolean'],
         ]);
 
         $period->reference_number = $data['reference_number'] ?? $period->reference_number;
@@ -117,6 +124,7 @@ class PeriodController extends Controller
         if(isset($data['active']) && $data['active'] === true) {
             $periods = Period::where('active', true)
                 ->where('id', '!=', $period->id)
+                ->where('type_pay_id', $period->type_pay_id)
                 ->get();
 
             foreach($periods as $period) {
@@ -125,9 +133,7 @@ class PeriodController extends Controller
             }
         }
 
-
         $route = $request->dashboard ? route('dashboard', absolute: false) : route('periods.show', $period, false);
-
         return redirect()->intended($route);
     }
 

@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class TypePay extends Model
 {
     use HasFactory;
+
+    public function periods()
+    {
+        return $this->hasMany(Period::class);
+    }
 }
