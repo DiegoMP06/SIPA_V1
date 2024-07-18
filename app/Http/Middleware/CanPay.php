@@ -17,7 +17,7 @@ class CanPay
     public function handle(Request $request, Closure $next): Response
     {
         if(!Period::canPay()) {
-            return redirect()->intended(route('home', absolute: true));
+            return redirect()->intended(route('home', absolute: false));
         }
 
         return $next($request);

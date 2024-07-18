@@ -67,7 +67,11 @@ class SubjectController extends Controller
      */
     public function show(Subject $subject)
     {
-        $clasrooms = $subject->classrooms()->with('semester')->with('specialty')->orderBy('id', 'DESC')->get();
+        $clasrooms = $subject->classrooms()
+            ->with('semester')
+            ->with('specialty')
+            ->orderBy('id', 'DESC')
+            ->get();
         $teachers = $subject->teachers;
         $semesters = Semester::all();
         $specialties = Specialty::all();

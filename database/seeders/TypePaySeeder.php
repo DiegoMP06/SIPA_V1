@@ -15,8 +15,15 @@ class TypePaySeeder extends Seeder
     public function run(): void
     {
         DB::table('type_pays')->insert([
-            'type' => 'Inscripción/Reinscripción',
-            'code' => 'INSCRIPCIÓN/REINSCRIPCIÓN',
+            'type' => 'Inscripción',
+            'code' => 'INSCRIPCIÓN',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+
+        DB::table('type_pays')->insert([
+            'type' => 'Reinscripción',
+            'code' => 'REINSCRIPCIÓN',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);

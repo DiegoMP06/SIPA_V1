@@ -14,7 +14,6 @@ class Pay extends Model
         "mother_last_name",
         "father_last_name",
         "code",
-        "curp",
         "semester_id",
         "shift_id",
         "specialty_id",

@@ -7,7 +7,6 @@ export default function usePeriods() {
     const [alerts, setAlerts] = useState<string[]>([]);
 
     const {data, setData, processing, errors, patch, post} = useForm<PeriodType>({
-        reference_number: '',
         account_number: '',
         interbank_code: '',
         amount: 0,

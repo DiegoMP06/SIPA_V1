@@ -12,7 +12,6 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('periods', function (Blueprint $table) {
-            $table->string('reference_number');
             $table->string('account_number');
             $table->string('interbank_code');
             $table->decimal('amount');
@@ -26,7 +25,6 @@ return new class extends Migration
     {
         Schema::table('periods', function (Blueprint $table) {
             $table->dropColumn([
-                'reference_number',
                 'account_number',
                 'interbank_code',
                 'amount',

@@ -15,15 +15,19 @@ class HomeController extends Controller
     public function __invoke()
     {
         $canPay = Period::canPay();
-        $canRegister = Period::canRegister() && Semester::canReRegistration();
+        $canRegister = Period::canRegister() && Semester::canRegistration();
+        $canReRegister = Period::canReRegister() && Semester::canReRegistration();
         $canExtraordinaryExam = Period::canExtraordinaryExam();
         $canIntersemesterAppeal = Period::canIntersemesterAppeal();
+        $semesters = Semester::where('active', 1)->where('id', '!=', 1)->get();
 
         return Inertia::render('Home', [
             'canPay' => $canPay,
             'canRegister' => $canRegister,
+            'canReRegister' => $canReRegister,
             'canExtraordinaryExam' => $canExtraordinaryExam,
             'canIntersemesterAppeal' => $canIntersemesterAppeal,
+            'semesters' => $semesters,
         ]);
     }
 }

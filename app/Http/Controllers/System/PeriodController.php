@@ -40,7 +40,6 @@ class PeriodController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'reference_number' => ['required', 'numeric', 'max_digits:20'],
             'account_number' => ['required', 'string', 'max:100'],
             'interbank_code' => ['required', 'numeric', 'digits:18'],
             'amount' => ['required', 'numeric', 'min:1'],
@@ -70,7 +69,7 @@ class PeriodController extends Controller
             ->with('shift')
             ->with('specialty')
             ->orderBy('id', 'DESC')
-            ->paginate(50);
+            ->paginate(30);
 
         return Inertia::render('Periods/Show', [
             'period' => $period->load('typePay'),
@@ -99,7 +98,6 @@ class PeriodController extends Controller
     public function update(Request $request, Period $period)
     {
         $data = $request->validate([
-            'reference_number' => ['numeric', 'max_digits:20'],
             'account_number' => ['string', 'max:100'],
             'interbank_code' => ['numeric', 'digits:18'],
             'amount' => ['numeric', 'min:1'],
@@ -110,7 +108,6 @@ class PeriodController extends Controller
             'active' => ['boolean'],
         ]);
 
-        $period->reference_number = $data['reference_number'] ?? $period->reference_number;
         $period->account_number = $data['account_number'] ?? $period->account_number;
         $period->interbank_code = $data['interbank_code'] ?? $period->interbank_code;
         $period->amount = $data['amount'] ?? $period->amount;

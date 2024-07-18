@@ -14,7 +14,7 @@ type SearchFormProps = {
     placeholder?: string;
 }
 
-export default function SearchForm({data, placeholder = "Buscar [CURP, No. Control, No. Ficha]", handleSearch, processing, setData, className = '', ...props} : FormHTMLAttributes<HTMLFormElement> & SearchFormProps) {
+export default function SearchForm({data, placeholder = "Buscar [No. Control, No. Ficha]", handleSearch, processing, setData, className = '', ...props} : FormHTMLAttributes<HTMLFormElement> & SearchFormProps) {
     return (
         <form className={`flex ${className}`} onSubmit={handleSearch} {...props}>
             <input

@@ -93,7 +93,7 @@
     .table th,
     .table td {
         border: 1px solid #7c7c7c;
-        padding: 4px 6px;
+        padding: 4px 8px;
         text-align: center;
         text-transform: uppercase;
         font-size: 11px;
@@ -101,8 +101,8 @@
 
     .pay-normal .table th,
     .pay-normal .table td {
-        font-size: 12px;
-        padding: 6px 3px;
+        font-size: 14px;
+        padding: 4px 5px;
     }
 
     .table__banco {

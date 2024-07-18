@@ -48,7 +48,7 @@ export default function Search({typePays} : SearchProps) {
                         type="search"
                         name="search"
                         id="search"
-                        placeholder="CURP, No. Control, No. Ficha"
+                        placeholder="No. Control, No. Ficha"
                         onChange={(e) => setData('search', e.target.value)}
                         value={data.search}
                     />

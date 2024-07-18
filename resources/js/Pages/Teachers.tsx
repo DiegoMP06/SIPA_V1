@@ -69,7 +69,7 @@ export default function Teachers({ auth, teachers }: PageProps<TeachersProps>) {
                 </div>
             ) : (
                 <p className="text-xl font-bold text-gray-700 my-40 text-center">
-                    No Hay Materias Disponibles
+                    No Hay Docentes Disponibles
                 </p>
             ) }
 

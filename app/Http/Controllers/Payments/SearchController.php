@@ -48,10 +48,7 @@ class SearchController extends Controller
             ]);
         }
 
-        $pay = Pay::where(function($query) {
-                $query->where('code', $this->search)
-                    ->orWhere('curp', $this->search);
-            })
+        $pay = Pay::where('code', $this->search)
             ->where('period_id', $periodActive->id)
             ->first();
 
@@ -61,13 +58,13 @@ class SearchController extends Controller
             ]);
         }
 
-        return redirect()->intended(route('search.show', ['type_pay' => $data['type_pay_id'], 'curp'=> $pay->curp], false));
+        return redirect()->intended(route('search.show', ['type_pay' => $data['type_pay_id'], 'code'=> $pay->code], false));
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(TypePay $typePay, String $curp)
+    public function show(TypePay $typePay, int $code)
     {
         $period = $typePay->periods()->where('active', true)->first();
 
@@ -75,15 +72,15 @@ class SearchController extends Controller
             return redirect()->intended(route('search'));
         }
 
-        $pays = $period->pays()->where('curp', $curp)
+        $pays = $period->pays()->where('code', $code)
             ->with('semester', 'shift', 'specialty', 'extraordinaryPayment')
             ->get();
 
         if($pays->count() === 0) {
-            return redirect()->intended(route('search'));
+            return redirect()->intended(route('search', absolute: false));
         }
 
-        if($typePay->id !== 1) {
+        if($typePay->id === 3 || $typePay->id === 4) {
             foreach($pays as $pay) {
                 $pay->extraordinaryPayment->load('subject', 'teacher');
             }

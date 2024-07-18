@@ -109,23 +109,6 @@ export default function ExtraordinaryPaymentForm({semesters, handleSubmit, alert
             </FormItem>
 
             <FormItem>
-                <InputLabel htmlFor="curp">
-                    CURP:
-                </InputLabel>
-
-                <TextInput
-                    type="text"
-                    name="curp"
-                    id="curp"
-                    placeholder="CURP del Alumno"
-                    value={data.curp}
-                    onChange={(e) => setData('curp', e.target.value)}
-                />
-
-                <InputError message={errors.curp} />
-            </FormItem>
-
-            <FormItem>
                 <InputLabel htmlFor="semester_id">
                     Semestre:
                 </InputLabel>

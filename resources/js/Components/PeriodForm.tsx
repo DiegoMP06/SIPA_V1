@@ -60,24 +60,7 @@ export default function PeriodForm({handleSubmit, alerts, data, setData, errors,
                 <InputError key={index} message={alert} />
             )) }
         </div>
-
-        <FormItem>
-            <InputLabel htmlFor="reference_number">
-                Número de Referencia:
-            </InputLabel>
-
-            <TextInput
-                type="number"
-                placeholder="Número de Referencia del Pago"
-                id="reference_number"
-                name="reference_number"
-                value={data.reference_number}
-                onChange={(e) => setData('reference_number', e.target.value)}
-            />
-
-            <InputError message={errors.reference_number} />
-        </FormItem>
-
+        
         <FormItem>
             <InputLabel htmlFor="account_number">
                 Número de Cuenta:

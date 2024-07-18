@@ -17,7 +17,6 @@ return new class extends Migration
             $table->string('father_last_name');
             $table->string('mother_last_name');
             $table->string('code');
-            $table->string('curp');
             $table->timestamps();
         });
     }

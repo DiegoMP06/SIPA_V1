@@ -1,15 +1,17 @@
 import { Link, Head } from '@inertiajs/react';
-import { PageProps } from '@/types';
+import { PageProps, SemesterType } from '@/types';
 import DGETIDARK from '@/Assets/dgeti_dark.webp';
 
 type HomeProps = {
     canPay: boolean;
     canRegister: boolean,
+    canReRegister: boolean,
     canExtraordinaryExam: boolean,
     canIntersemesterAppeal: boolean,
+    semesters: SemesterType[];
 }
 
-export default function Welcome({ auth, canRegister, canPay, canExtraordinaryExam, canIntersemesterAppeal }: PageProps<HomeProps>) {
+export default function Welcome({ auth, canRegister, canReRegister, canPay, canExtraordinaryExam, canIntersemesterAppeal, semesters }: PageProps<HomeProps>) {
 
     return (
         <>
@@ -64,6 +66,51 @@ export default function Welcome({ auth, canRegister, canPay, canExtraordinaryExa
                     <h1 className="text-4xl my-10 max-w-2xl lg:text-5xl text-center font-bold text-white mx-auto px-4">
                         Sistema Institucional de Pagos Academicos 211
                     </h1>
+
+                    <main id="tramites" className="my-16 px-4 mx-auto container">
+                        <div className="bg-indigo-950 border border-indigo-600 max-w-2xl mx-auto p-4 rounded-lg space-y-10">
+                            <h2 className="text-center text-indigo-100 font-bold text-2xl">
+                                Tramites
+                            </h2>
+
+                            { (canPay && !auth.user) ? (
+                                <nav className="flex flex-col gap-6">
+                                    { canRegister &&
+                                        <Link href={route('registration')} className="bg-indigo-100 hover:bg-indigo-200 text-center font-bold text-indigo-950 px-4 py-2 uppercase">
+                                            Generar Ficha de Nuevo Ingreso
+                                        </Link>
+                                    }
+
+                                    { canReRegister && semesters.map(semester => (
+                                            <Link key={semester.id} href={route('re-registration', {semester})} className="bg-indigo-100 hover:bg-indigo-200 text-center font-bold text-indigo-950 px-4 py-2 uppercase">
+                                                Generar Ficha de Reinscripción de { semester.semester } Semestre
+                                            </Link>
+                                        ))
+                                    }
+
+                                    { canExtraordinaryExam &&
+                                        <Link href={route('extraordinary-exam')} className="bg-indigo-100 hover:bg-indigo-200 text-center font-bold text-indigo-950 px-4 py-2 uppercase">
+                                            Generar Ficha de Examen Extraordinario
+                                        </Link>
+                                    }
+
+                                    { canIntersemesterAppeal &&
+                                        <Link href={route('intersemester-appeal')} className="bg-indigo-100 hover:bg-indigo-200 text-center font-bold text-indigo-950 px-4 py-2 uppercase">
+                                            Generar Ficha de Recursamiento Intersemestral
+                                        </Link>
+                                    }
+
+                                    <Link href={route('search')} className="bg-indigo-100 hover:bg-indigo-200 text-center font-bold text-indigo-950 px-4 py-2 uppercase">
+                                        Buscar Ficha de Pago
+                                    </Link>
+                                </nav>
+                            ) : (
+                                <p className="text-center text-white font-bold text-lg my-16">
+                                    No Hay Tramites Disponibles
+                                </p>
+                            )}
+                        </div>
+                    </main>
 
                     <section className="mb-16 mt-10 px-4 container mx-auto space-y-16">
                         <div className="bg-indigo-950 p-4 rounded-lg border border-indigo-600 max-w-2xl space-y-4 place-self-start mx-auto">
@@ -162,45 +209,6 @@ export default function Welcome({ auth, canRegister, canPay, canExtraordinaryExa
                             En resumen, nuestro Sistema Institucional de Pagos Académicos es una herramienta pensada para ti. Simplifica tus trámites financieros y concéntrate en lo más importante: tu formación académica.
                         </p>
                     </section>
-
-
-                    <main id="tramites" className="my-16 px-4 mx-auto container">
-                        <div className="bg-indigo-950 border border-indigo-600 max-w-2xl mx-auto p-4 rounded-lg space-y-10">
-                            <h2 className="text-center text-indigo-100 font-bold text-2xl">
-                                Tramites
-                            </h2>
-
-                            { (canPay && !auth.user) ? (
-                                <nav className="flex flex-col gap-6">
-                                    { canRegister &&
-                                        <Link href={route('re-registration')} className="bg-indigo-100 hover:bg-indigo-200 text-center font-bold text-indigo-950 px-4 py-2 uppercase">
-                                            Generar Ficha de Inscripción/Reinscripción
-                                        </Link>
-                                    }
-
-                                    { canExtraordinaryExam &&
-                                        <Link href={route('extraordinary-exam')} className="bg-indigo-100 hover:bg-indigo-200 text-center font-bold text-indigo-950 px-4 py-2 uppercase">
-                                            Generar Ficha de Examen Extraordinario
-                                        </Link>
-                                    }
-
-                                    { canIntersemesterAppeal &&
-                                        <Link href={route('intersemester-appeal')} className="bg-indigo-100 hover:bg-indigo-200 text-center font-bold text-indigo-950 px-4 py-2 uppercase">
-                                            Generar Ficha de Recursamiento Intersemestral
-                                        </Link>
-                                    }
-
-                                    <Link href={route('search')} className="bg-indigo-100 hover:bg-indigo-200 text-center font-bold text-indigo-950 px-4 py-2 uppercase">
-                                        Buscar Ficha de Pago
-                                    </Link>
-                                </nav>
-                            ) : (
-                                <p className="text-center text-white font-bold text-lg my-16">
-                                    No Hay Tramites Disponibles
-                                </p>
-                            )}
-                        </div>
-                    </main>
 
                     <footer className="bg-indigo-950">
                         <p className="max-w-4xl text-lg lg:text-xl font-bold text-center mx-auto px-4 py-3 text-white">

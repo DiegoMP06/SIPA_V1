@@ -9,8 +9,9 @@ import SubmitButton from "./SubmitButton";
 import FormReportContainer from "./FormReportContainer";
 import FormItem from "./FormItem";
 
-type RegisterFormProps = {
-    semesters: SemesterType[],
+type ReRegistrationFormProps = {
+    semesters?: SemesterType[];
+    edit?: boolean;
     specialties: SpecialtyType[],
     shifts: ShiftType[],
     handleSubmit: FormEventHandler;
@@ -22,8 +23,7 @@ type RegisterFormProps = {
     btnSubmit: string;
 }
 
-export default function RegistrationForm({semesters,handleSubmit, alerts, data, setData, errors, shifts, specialties, processing, btnSubmit} : RegisterFormProps) {
-    const semestersValidated = useMemo(() => semesters.filter((semester) => semester.active), [semesters]);
+export default function ReRegistrationForm({handleSubmit, alerts, data, setData, errors, shifts, specialties, processing, btnSubmit, edit, semesters} : ReRegistrationFormProps) {
 
     return (
         <FormReportContainer handleSubmit={handleSubmit}>
@@ -86,58 +86,42 @@ export default function RegistrationForm({semesters,handleSubmit, alerts, data, 
 
             <FormItem>
                 <InputLabel htmlFor="code">
-                    Número de Control o de Ficha:
+                    Número de Control:
                 </InputLabel>
 
                 <TextInput
                     type="number"
                     name="code"
                     id="code"
-                    placeholder="Número de Control o de Ficha del Alumno"
+                    placeholder="Número de Control del Alumno"
                     value={data.code}
                     onChange={(e) => setData('code', e.target.value)}
                 />
 
                 <InputError message={errors.code} />
             </FormItem>
+            { (edit && semesters) && (
+                <FormItem>
+                    <InputLabel htmlFor="semester_id">
+                        Semestre:
+                    </InputLabel>
 
-            <FormItem>
-                <InputLabel htmlFor="curp">
-                    CURP:
-                </InputLabel>
+                    <SelectInput
+                        name="semester_id"
+                        id="semester_id"
+                        value={data.semester_id}
+                        onChange={(e) => setData('semester_id', Number(e.target.value))}
+                    >
+                        { semesters.map((semester) => (
+                            <option key={semester.id} value={semester.id}>
+                                {semester.semester}
+                            </option>
+                        )) }
+                    </SelectInput>
 
-                <TextInput
-                    type="text"
-                    name="curp"
-                    id="curp"
-                    placeholder="CURP del Alumno"
-                    value={data.curp}
-                    onChange={(e) => setData('curp', e.target.value)}
-                />
-
-                <InputError message={errors.curp} />
-            </FormItem>
-
-            <FormItem>
-                <InputLabel htmlFor="semester_id">
-                    Semestre:
-                </InputLabel>
-
-                <SelectInput
-                    name="semester_id"
-                    id="semester_id"
-                    value={data.semester_id}
-                    onChange={(e) => setData('semester_id', Number(e.target.value))}
-                >
-                    { semestersValidated.map((semester) => (
-                        <option key={semester.id} value={semester.id}>
-                            { Number(semester.semester) === 1 ? 'Nuevo Ingreso (Inscripción)' : semester.semester }
-                        </option>
-                    )) }
-                </SelectInput>
-
-                <InputError message={errors.semester_id} />
-            </FormItem>
+                    <InputError message={errors.semester_id} />
+                </FormItem>
+            ) }
 
             <FormItem>
                 <InputLabel htmlFor="specialty_id">

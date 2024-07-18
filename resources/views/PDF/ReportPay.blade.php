@@ -1,7 +1,7 @@
 @extends('PDF.Layout')
 
 @section('title')
-    Ficha de Pago {{ $pay->curp }}
+    Ficha de Pago {{ $pay->name }} {{ $pay->father_last_name }} {{ $pay->mother_last_name }}
 @endsection
 
 @section('body')

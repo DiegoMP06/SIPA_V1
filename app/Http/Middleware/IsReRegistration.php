@@ -15,8 +15,8 @@ class IsReRegistration
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if($request->pay->period->type_pay_id !== 1) {
-            return redirect()->intended(route('home', absolute: true));
+        if($request->pay->period->type_pay_id !== 2) {
+            return redirect()->intended(route('home', absolute: false));
         }
 
         return $next($request);

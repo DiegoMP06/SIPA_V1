@@ -16,28 +16,22 @@ use Illuminate\Validation\ValidationException;
 
 class ReRegistrationController extends Controller
 {
-    protected $id;
-    protected $period_id;
-    protected $code;
-    protected $curp;
-
     /**
      * Show the form for creating a new resource.
      */
-    public function create(Request $request)
+    public function create(Request $request, Semester $semester)
     {
         $specialties = Specialty::all();
         $shifts = Shift::all();
-        $semesters = Semester::all();
         $period = Period::where('active', 1)
-            ->where('type_pay_id', 1)
+            ->where('type_pay_id', 2)
             ->first();
 
         return Inertia::render('Forms/ReRegistration', [
             'specialties' => $specialties,
             'shifts' => $shifts,
-            'semesters' => $semesters,
             'period' => $period,
+            'semester' => $semester,
             'pay' => $request->pay ?? null,
         ]);
     }
@@ -45,53 +39,40 @@ class ReRegistrationController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, Semester $semester)
     {
         $data = $request->validate([
             "name" => ["required", "string", "max:100"],
             "mother_last_name" => ["required", "string", "max:100"],
             "father_last_name" => ["required", "string", "max:100"],
-            "code" => ["required", "numeric", "max_digits:14"],
-            "curp" => ["required", "string", "regex:/^([A-Z][AEIOUX][A-Z]{2}\d{2}(?:0\d|1[0-2])(?:[0-2]\d|3[01])[HM](?:AS|B[CS]|C[CLMSH]|D[FG]|G[TR]|HG|JC|M[CNS]|N[ETL]|OC|PL|Q[TR]|S[PLR]|T[CSL]|VZ|YN|ZS)[B-DF-HJ-NP-TV-Z]{3}[A-Z\d])(\d)$/"],
-            "semester_id" => ["required", "numeric", "exists:semesters,id"],
+            "code" => ["required", "numeric", "digits:14"],
             "shift_id" => ["required", "numeric", "exists:shifts,id"],
             "specialty_id" => ["required", "numeric", "exists:specialties,id"],
             "period_id" => ["required", "numeric", "exists:periods,id"],
         ]);
 
-        if((int) $data['semester_id'] === 1 && strlen($data['code']) > 4) {
-            throw ValidationException::withMessages([
-                'code' => 'Numero de Ficha Invalida',
-            ]);
-        }
-
-        if((int) $data['semester_id'] !== 1 && strlen($data['code']) !== 14) {
-            throw ValidationException::withMessages([
-                'code' => 'Numero de Control Invalido',
-            ]);
-        }
-
-        $this->period_id = $data['period_id'];
-        $this->curp = $data['curp'];
-        $this->code = $data['code'];
-
-        $pay_exists = Pay::where(function($query) {
-                $query->where('period_id', $this->period_id)
-                    ->where('curp', $this->curp);
-            })->orWhere(function($query) {
-                $query->where('period_id', $this->period_id)
-                    ->where('code', $this->code);
-            })->exists();
+        $pay_exists = Pay::where('period_id', $request->period_id)
+            ->where('code', $request->code)
+            ->exists();
 
         if($pay_exists) {
             throw ValidationException::withMessages([
-                'curp' => 'Curp o Número de ' . (((int) $data['semester_id'] === 1) ? 'Ficha' : 'Control') .  ' ya Registrados',
+                'code' => 'Número de Control ya Registrado',
             ]);
         }
 
-        $pay = Pay::create($data);
+        $pay = Pay::create([
+            'name' => $data['name'],
+            'mother_last_name' => $data['mother_last_name'],
+            'father_last_name' => $data['father_last_name'],
+            'code' => $data['code'],
+            'semester_id' => $semester->id,
+            'shift_id' => $data['shift_id'],
+            'specialty_id' => $data['specialty_id'],
+            'period_id' => $data['period_id'],
+        ]);
 
-        return redirect()->intended(route('re-registration', ['pay' => $pay->id], true));
+        return redirect()->intended(route('re-registration', ['semester' => $semester, 'pay' => $pay->id], false));
     }
 
     /**
@@ -117,7 +98,7 @@ class ReRegistrationController extends Controller
             'date' => $date,
         ]);
 
-        return $pdf->stream('FICHA_PAGO_'.$pay->curp.'.pdf');
+        return $pdf->stream('FICHA_PAGO_'.$pay->code.'.pdf');
     }
 
     /**
@@ -127,7 +108,9 @@ class ReRegistrationController extends Controller
     {
         $specialties = Specialty::all();
         $shifts = Shift::all();
-        $semesters = Semester::all();
+        $semesters = Semester::where('active', true)
+            ->where('id', '!=', 1)
+            ->get();
         $period = $pay->period;
 
         return Inertia::render('Forms/EditReRegistration', [
@@ -148,43 +131,20 @@ class ReRegistrationController extends Controller
             "name" => ["required", "string", "max:100"],
             "mother_last_name" => ["required", "string", "max:100"],
             "father_last_name" => ["required", "string", "max:100"],
-            "code" => ["required", "numeric", "max_digits:14"],
-            "curp" => ["required", "string", "regex:/^([A-Z][AEIOUX][A-Z]{2}\d{2}(?:0\d|1[0-2])(?:[0-2]\d|3[01])[HM](?:AS|B[CS]|C[CLMSH]|D[FG]|G[TR]|HG|JC|M[CNS]|N[ETL]|OC|PL|Q[TR]|S[PLR]|T[CSL]|VZ|YN|ZS)[B-DF-HJ-NP-TV-Z]{3}[A-Z\d])(\d)$/"],
+            "code" => ["required", "numeric", "digits:14"],
             "semester_id" => ["required", "numeric", "exists:semesters,id"],
             "shift_id" => ["required", "numeric", "exists:shifts,id"],
             "specialty_id" => ["required", "numeric", "exists:specialties,id"],
         ]);
 
-        if((int) $data['semester_id'] === 1 && strlen($data['code']) > 4) {
-            throw ValidationException::withMessages([
-                'code' => 'Numero de Ficha Invalida',
-            ]);
-        }
-
-        if((int) $data['semester_id'] !== 1 && strlen($data['code']) !== 14) {
-            throw ValidationException::withMessages([
-                'code' => 'Numero de Control Invalido',
-            ]);
-        }
-
-        $this->id = $pay->id;
-        $this->period_id = $pay->period_id;
-        $this->curp = $data['curp'];
-        $this->code = $data['code'];
-
-        $pay_exists = Pay::where(function($query) {
-                $query->where('period_id', $this->period_id)
-                    ->where('curp', $this->curp)
-                    ->where('id', '!=', $this->id);
-            })->orWhere(function($query) {
-                $query->where('period_id', $this->period_id)
-                    ->where('code', $this->code)
-                    ->where('id', '!=', $this->id);
-            })->exists();
+        $pay_exists = Pay::where('period_id', $pay->period_id)
+            ->where('code', $request->code)
+            ->where('id', '!=', $pay->id)
+            ->exists();
 
         if($pay_exists) {
             throw ValidationException::withMessages([
-                'curp' => 'Curp o Número de ' . (((int) $data['semester_id'] === 1) ? 'Ficha' : 'Control') .  ' ya Registrados',
+                'code' => 'Número de Control ya Registrados',
             ]);
         }
 
@@ -192,12 +152,11 @@ class ReRegistrationController extends Controller
         $pay->mother_last_name = $data['mother_last_name'];
         $pay->father_last_name = $data['father_last_name'];
         $pay->code = $data['code'];
-        $pay->curp = $data['curp'];
         $pay->semester_id = $data['semester_id'];
         $pay->shift_id = $data['shift_id'];
         $pay->specialty_id = $data['specialty_id'];
         $pay->save();
 
-        return redirect()->intended(route('search.show', ['curp' => $pay->curp, 'type_pay' => $pay->period->type_pay_id], false));
+        return redirect()->intended(route('search.show', ['code' => $pay->code, 'type_pay' => $pay->period->type_pay_id], false));
     }
 }

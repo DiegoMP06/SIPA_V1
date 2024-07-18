@@ -19,8 +19,8 @@ type ShowPayProps = {
 };
 
 export default function ShowPay({period, pays, typePay} : ShowPayProps) {
-    const nameRoute = useMemo(() => ({1: 're-registration', 2: 'extraordinary-exam', 3: 'intersemester-appeal'}[typePay.id ?? 1]), [typePay]);
-    const isExtraordinary = useMemo(() => typePay.id !== 1, [typePay]);
+    const nameRoute = useMemo(() => ({1: 'registration', 2: 're-registration', 3: 'extraordinary-exam', 4: 'intersemester-appeal'}[typePay.id ?? 1]), [typePay]);
+    const isExtraordinary = useMemo(() => typePay.id === 3 || typePay.id === 4, [typePay]);
 
     return (
         <FormLayout title="Fichas de Pago" period={period}>
@@ -37,23 +37,12 @@ export default function ShowPay({period, pays, typePay} : ShowPayProps) {
                             <p className="text-indigo-700 font-bold text-lg flex justify-between p-2 gap-4">
                                 Concepto de Pago: { '' }
                                 <span className="text-gray-700">
-                                    { typePay.id === 1 ?
-                                        Number(pay.semester.semester) === 1 ? 'Inscripción' : 'Reinscripción'
-                                        :
-                                        typePay.type
-                                    }
+                                    { typePay.type }
                                 </span>
                             </p>
 
                             <p className="text-indigo-700 font-bold text-lg flex justify-between p-2 gap-4">
-                                CURP: { '' }
-                                <span className="text-gray-700">
-                                    { pay.curp }
-                                </span>
-                            </p>
-
-                            <p className="text-indigo-700 font-bold text-lg flex justify-between p-2 gap-4">
-                                { typePay.id === 1 && Number(pay.semester.semester) === 1 ? 'No. de Ficha' : 'No. de Control' }: { '' }
+                                { typePay.id === 1 ? 'No. de Ficha' : 'No. de Control' }: { '' }
                                 <span className="text-gray-700">
                                     { pay.code }
                                 </span>
@@ -62,7 +51,7 @@ export default function ShowPay({period, pays, typePay} : ShowPayProps) {
                             <p className="text-indigo-700 font-bold text-lg flex justify-between p-2 gap-4">
                                 Semestre: { '' }
                                 <span className="text-gray-700">
-                                    { pay.semester.semester }{ pay.semester.group }
+                                    { pay.semester.semester } { pay.semester.group }
                                 </span>
                             </p>
 

@@ -17,8 +17,8 @@ class CanReRegistration
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if(!Semester::canReRegistration() || !Period::canRegister()) {
-            return redirect()->intended(route('home', absolute: true));
+        if(!Semester::canReRegistration() || !Period::canReRegister()) {
+            return redirect()->intended(route('home', absolute: false));
         }
 
         return $next($request);

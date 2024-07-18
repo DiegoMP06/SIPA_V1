@@ -18,7 +18,6 @@ export default function useExtraordinaryPay({nameRoute} : {nameRoute: 'extraordi
         mother_last_name: '',
         father_last_name: '',
         code: '',
-        curp: '',
         semester_id: 0,
         shift_id: 0,
         specialty_id: 0,
@@ -44,18 +43,12 @@ export default function useExtraordinaryPay({nameRoute} : {nameRoute: 'extraordi
     const validate = () => {
         let currentAlerts : string[] = [];
 
-        const CURP_REGEX = /^([A-Z][AEIOUX][A-Z]{2}\d{2}(?:0\d|1[0-2])(?:[0-2]\d|3[01])[HM](?:AS|B[CS]|C[CLMSH]|D[FG]|G[TR]|HG|JC|M[CNS]|N[ETL]|OC|PL|Q[TR]|S[PLR]|T[CSL]|VZ|YN|ZS)[B-DF-HJ-NP-TV-Z]{3}[A-Z\d])(\d)$/
-
         if(Object.values(data).some(value => value?.toString().trim() === '' || value === 0)) {
             currentAlerts = ['Todos los Campos son Obligatorios', ...currentAlerts];
         }
 
         if(data.code.trim().length !== 14 || isNaN(Number(data.code))) {
             currentAlerts = ['El Numero de Control es Invalido', ...currentAlerts];
-        }
-
-        if(!data.curp.match(CURP_REGEX)) {
-            currentAlerts = ['El CURP es Invalido', ...currentAlerts];
         }
 
         return currentAlerts;

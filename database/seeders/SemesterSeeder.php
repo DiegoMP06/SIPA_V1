@@ -14,7 +14,7 @@ class SemesterSeeder extends Seeder
     public function run(): void
     {
         DB::table('semesters')->insert([
-            'semester' => 1,
+            'semester' => '1er',
             'group' => 'A',
             'active' => true,
             'created_at' => now(),
@@ -22,7 +22,7 @@ class SemesterSeeder extends Seeder
         ]);
 
         DB::table('semesters')->insert([
-            'semester' => 2,
+            'semester' => '2do',
             'group' => 'A',
             'active' => false,
             'created_at' => now(),
@@ -30,7 +30,7 @@ class SemesterSeeder extends Seeder
         ]);
 
         DB::table('semesters')->insert([
-            'semester' => 3,
+            'semester' => '3er',
             'group' => 'A',
             'active' => true,
             'created_at' => now(),
@@ -38,7 +38,7 @@ class SemesterSeeder extends Seeder
         ]);
 
         DB::table('semesters')->insert([
-            'semester' => 4,
+            'semester' => '4to',
             'group' => 'A',
             'active' => false,
             'created_at' => now(),
@@ -46,7 +46,7 @@ class SemesterSeeder extends Seeder
         ]);
 
         DB::table('semesters')->insert([
-            'semester' => 5,
+            'semester' => '5to',
             'group' => 'A',
             'active' => true,
             'created_at' => now(),
@@ -54,7 +54,7 @@ class SemesterSeeder extends Seeder
         ]);
 
         DB::table('semesters')->insert([
-            'semester' => 6,
+            'semester' => '6to',
             'group' => 'A',
             'active' => false,
             'created_at' => now(),

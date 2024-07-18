@@ -67,7 +67,6 @@ export type PeriodType<T extends Record<string, unknown> = Record<string, unknow
     end_month: string;
     end_year: string;
     active?: 1 | 0;
-    reference_number: string;
     account_number: string;
     interbank_code: string;
     amount: number;
@@ -90,7 +89,6 @@ export type PayType<T extends Record<string, unknown> = Record<string, unknown>>
     mother_last_name: string;
     father_last_name: string;
     code: string;
-    curp: string;
     specialty_id?: number;
     shift_id?: number;
     period_id?: number;

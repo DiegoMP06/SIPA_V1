@@ -25,7 +25,7 @@ export default function Show({auth, period, payments, page, search} : PageProps<
     const title =`${period.start_month} ${period.start_year} - ${period.end_month} ${period.end_year}`;
     const hasPayments = useMemo(() => payments.data.length > 0, [payments]);
 
-    const nameRoute = {1: 're-registration', 2: 'extraordinary-exam', 3: 'intersemester-appeal'}[period.type_pay_id];
+    const nameRoute = {1: 'registration', 2: 're-registration', 3: 'extraordinary-exam', 4: 'intersemester-appeal'}[period.type_pay_id];
 
     const {data, setData, processing, get} = useForm({search, page});
 
@@ -77,13 +77,6 @@ export default function Show({auth, period, payments, page, search} : PageProps<
                         </p>
 
                         <p className="text-indigo-700 font-bold text-xl">
-                            Número de Referencia: { '' }
-                            <span className="text-gray-700">
-                                { period.reference_number }
-                            </span>
-                        </p>
-
-                        <p className="text-indigo-700 font-bold text-xl">
                             Clabe Interbancaria: { '' }
                             <span className="text-gray-700">
                                 { period.interbank_code }
@@ -121,13 +114,6 @@ export default function Show({auth, period, payments, page, search} : PageProps<
                                     { payment.semester_id === 1 ? 'Número de Ficha' : 'Número de Control' }: { '' }
                                     <span className="text-gray-700">
                                         { payment.code }
-                                    </span>
-                                </p>
-
-                                <p className="font-bold text-indigo-700">
-                                    CURP: { '' }
-                                    <span className="text-gray-700">
-                                        { payment.curp }
                                     </span>
                                 </p>
 

@@ -15,8 +15,8 @@ class IsIntersemesterAppeal
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if($request->pay->period->type_pay_id !== 3) {
-            return redirect()->intended(route('home', absolute: true));
+        if($request->pay->period->type_pay_id !== 4) {
+            return redirect()->intended(route('home', absolute: false));
         }
 
         return $next($request);

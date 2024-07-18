@@ -1,4 +1,4 @@
-@if ($pay->period->type_pay_id === 1)
+@if ($pay->period->type_pay_id === 1 || $pay->period->type_pay_id === 2)
     <section class="container pay-normal">
 @else
     <section class="container">
@@ -56,29 +56,10 @@
                         {{ $pay->specialty->code }}
                     </td>
                 </tr>
-
-                <tr>
-                    <th colspan="2">
-                        {{ $pay->period->type_pay_id === 1 && $pay->semester_id === 1 ? 'No. de Ficha:' : 'No. de Control:' }}
-                    </th>
-
-                    <td colspan="2">
-                        {{ $pay->code }}
-                    </td>
-
-                    <th colspan="1">
-                        CURP:
-                    </th>
-
-                    <td colspan="3">
-                        {{ $pay->curp }}
-                    </td>
-                </tr>
             </thead>
 
             <tbody class="table__body">
-                @if ($pay->period->type_pay_id !== 1)
-
+                @if ($pay->period->type_pay_id === 3 || $pay->period->type_pay_id === 4)
                     <tr>
                         <th colspan="1">
                             Materia:
@@ -112,28 +93,27 @@
                     </th>
 
                     <td colspan="5">
-                        {{ $pay->period->type_pay_id === 1 ?
-                            ($pay->semester_id === 1 ? 'Inscripción' : 'Reinscripción')
-                            : $pay->period->typePay->type
-                        }}
+                        {{  $pay->period->typePay->type }}
                     </td>
                 </tr>
 
                 <tr>
-                    <th colspan="2">
-                        No. de Referencia:
-                    </th>
-
-                    <td colspan="2">
-                        {{ $pay->period->reference_number }}
-                    </td>
-
-                    <th colspan="2">
+                    <th colspan="3">
                         No. de Cuenta:
                     </th>
 
-                    <td colspan="2">
+                    <td colspan="5">
                         {{ $pay->period->account_number }}
+                    </td>
+                </tr>
+
+                <tr>
+                    <th colspan="3">
+                        No. de Referencia:
+                    </th>
+
+                    <td colspan="5">
+                        {{ $pay->code }}
                     </td>
                 </tr>
 

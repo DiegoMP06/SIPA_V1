@@ -16,11 +16,6 @@ use Illuminate\Validation\ValidationException;
 
 class ExtraordinaryExamController extends Controller
 {
-    protected $id;
-    protected $period_id;
-    protected $code;
-    protected $curp;
-
     /**
      * Show the form for creating a new resource.
      */
@@ -30,7 +25,7 @@ class ExtraordinaryExamController extends Controller
         $shifts = Shift::all();
         $semesters = Semester::all();
         $period = Period::where('active', 1)
-            ->where('type_pay_id', 2)
+            ->where('type_pay_id', 3)
             ->first();
 
         return Inertia::render('Forms/ExtraordinaryExam', [
@@ -52,7 +47,6 @@ class ExtraordinaryExamController extends Controller
             "mother_last_name" => ["required", "string", "max:100"],
             "father_last_name" => ["required", "string", "max:100"],
             "code" => ["required", "numeric", "digits:14"],
-            "curp" => ["required", "string", "regex:/^([A-Z][AEIOUX][A-Z]{2}\d{2}(?:0\d|1[0-2])(?:[0-2]\d|3[01])[HM](?:AS|B[CS]|C[CLMSH]|D[FG]|G[TR]|HG|JC|M[CNS]|N[ETL]|OC|PL|Q[TR]|S[PLR]|T[CSL]|VZ|YN|ZS)[B-DF-HJ-NP-TV-Z]{3}[A-Z\d])(\d)$/"],
             "semester_id" => ["required", "numeric", "exists:semesters,id"],
             "shift_id" => ["required", "numeric", "exists:shifts,id"],
             "specialty_id" => ["required", "numeric", "exists:specialties,id"],
@@ -61,21 +55,13 @@ class ExtraordinaryExamController extends Controller
             "teacher_id" => ["required", "numeric", "exists:teachers,id"],
         ]);
 
-        $this->period_id = $data['period_id'];
-        $this->curp = $data['curp'];
-        $this->code = $data['code'];
-
-        $count = Pay::where(function($query) {
-                $query->where('period_id', $this->period_id)
-                    ->where('curp', $this->curp);
-            })->orWhere(function($query) {
-                $query->where('period_id', $this->period_id)
-                    ->where('code', $this->code);
-            })->count();
+        $count = Pay::where('period_id', $request->period_id)
+            ->where('code', $request->code)
+            ->count();
 
         if($count > 10) {
             throw ValidationException::withMessages([
-                'curp' => 'Demasiados Registros en este CURP o Número de Control',
+                'code' => 'Demasiados Registros en este Número de Control',
             ]);
         }
 
@@ -84,7 +70,6 @@ class ExtraordinaryExamController extends Controller
             'mother_last_name' => $data['mother_last_name'],
             'father_last_name' => $data['father_last_name'],
             'code' => $data['code'],
-            'curp' => $data['curp'],
             'semester_id' => $data['semester_id'],
             'shift_id' => $data['shift_id'],
             'specialty_id' => $data['specialty_id'],
@@ -96,7 +81,7 @@ class ExtraordinaryExamController extends Controller
             'teacher_id' => $data['teacher_id'],
         ]);
 
-        return redirect()->intended(route('extraordinary-exam', ['pay' => $pay->id], true));
+        return redirect()->intended(route('extraordinary-exam', ['pay' => $pay->id], false));
     }
 
     /**
@@ -122,7 +107,7 @@ class ExtraordinaryExamController extends Controller
             'date' => $date,
         ]);
 
-        return $pdf->stream('FICHA_EEXAMEN_EXTRAORDINARIO_'.$pay->curp.'.pdf');
+        return $pdf->stream('FICHA_EEXAMEN_EXTRAORDINARIO_'.$pay->code.'.pdf');
     }
 
     /**
@@ -156,7 +141,6 @@ class ExtraordinaryExamController extends Controller
             "mother_last_name" => ["required", "string", "max:100"],
             "father_last_name" => ["required", "string", "max:100"],
             "code" => ["required", "numeric", "digits:14"],
-            "curp" => ["required", "string", "regex:/^([A-Z][AEIOUX][A-Z]{2}\d{2}(?:0\d|1[0-2])(?:[0-2]\d|3[01])[HM](?:AS|B[CS]|C[CLMSH]|D[FG]|G[TR]|HG|JC|M[CNS]|N[ETL]|OC|PL|Q[TR]|S[PLR]|T[CSL]|VZ|YN|ZS)[B-DF-HJ-NP-TV-Z]{3}[A-Z\d])(\d)$/"],
             "semester_id" => ["required", "numeric", "exists:semesters,id"],
             "shift_id" => ["required", "numeric", "exists:shifts,id"],
             "specialty_id" => ["required", "numeric", "exists:specialties,id"],
@@ -164,24 +148,14 @@ class ExtraordinaryExamController extends Controller
             "teacher_id" => ["required", "numeric", "exists:teachers,id"],
         ]);
 
-        $this->id = $pay->id;
-        $this->period_id = $pay->period_id;
-        $this->curp = $data['curp'];
-        $this->code = $data['code'];
-
-        $count = Pay::where(function($query) {
-                $query->where('period_id', $this->period_id)
-                    ->where('curp', $this->curp)
-                    ->where('id', '!=', $this->id);
-            })->orWhere(function($query) {
-                $query->where('period_id', $this->period_id)
-                    ->where('code', $this->code)
-                    ->where('id', '!=', $this->id);
-            })->count();
+        $count = Pay::where('period_id', $pay->period_id)
+            ->where('code', $request->code)
+            ->where('id', '!=', $pay->id)
+            ->count();
 
         if($count > 10) {
             throw ValidationException::withMessages([
-                'curp' => 'Demasiados Registros en este CURP o Número de Control',
+                'code' => 'Demasiados Registros en este Número de Control',
             ]);
         }
 
@@ -189,7 +163,6 @@ class ExtraordinaryExamController extends Controller
         $pay->mother_last_name = $data['mother_last_name'];
         $pay->father_last_name = $data['father_last_name'];
         $pay->code = $data['code'];
-        $pay->curp = $data['curp'];
         $pay->semester_id = $data['semester_id'];
         $pay->shift_id = $data['shift_id'];
         $pay->specialty_id = $data['specialty_id'];
@@ -200,6 +173,6 @@ class ExtraordinaryExamController extends Controller
         $extraordinaryPayment->teacher_id = $data['teacher_id'];
         $extraordinaryPayment->save();
 
-        return redirect()->intended(route('search.show', ['curp' => $pay->curp, 'type_pay' => $pay->period->type_pay_id], false));
+        return redirect()->intended(route('search.show', ['code' => $pay->code, 'type_pay' => $pay->period->type_pay_id], false));
     }
 }

@@ -10,7 +10,6 @@ class Period extends Model
     use HasFactory;
 
     protected $fillable = [
-        'reference_number',
         'account_number',
         'interbank_code',
         'amount',
@@ -39,7 +38,7 @@ class Period extends Model
         return $periodRegister ? true : false;
     }
 
-    public static function canExtraordinaryExam() : bool
+    public static function canReRegister() : bool
     {
         $periodRegister = self::where('active', true)
             ->where('type_pay_id', 2)
@@ -48,10 +47,19 @@ class Period extends Model
         return $periodRegister ? true : false;
     }
 
-    public static function canIntersemesterAppeal() : bool
+    public static function canExtraordinaryExam() : bool
     {
         $periodRegister = self::where('active', true)
             ->where('type_pay_id', 3)
+            ->first();
+
+        return $periodRegister ? true : false;
+    }
+
+    public static function canIntersemesterAppeal() : bool
+    {
+        $periodRegister = self::where('active', true)
+            ->where('type_pay_id', 4)
             ->first();
 
         return $periodRegister ? true : false;
