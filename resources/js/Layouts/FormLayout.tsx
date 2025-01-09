@@ -109,7 +109,7 @@ export default function FormLayout({ children, title, period } : FormLayoutProps
 
         <footer className="bg-indigo-700">
             <p className="max-w-4xl text-lg lg:text-xl font-bold text-center mx-auto px-4 py-3 text-white">
-                Todos los Derechos Reservado CBTis No. 211 { new Date().getFullYear() }&copy;. Made by Diego Meneses.
+                Todos los Derechos Reservados CBTis No. 211 { new Date().getFullYear() }&copy;. Made by Diego Meneses.
             </p>
         </footer>
     </>

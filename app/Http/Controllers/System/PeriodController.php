@@ -62,8 +62,7 @@ class PeriodController extends Controller
     {
         $payments = $period->pays()
             ->when($request->search, function($query, $search) {
-                $query->where('code', 'like', "%{$search}%")
-                    ->orWhere('curp', 'like', "%{$search}%");
+                $query->where('code', 'like', "%{$search}%");
             })
             ->with('semester')
             ->with('shift')

@@ -77,13 +77,18 @@
         text-transform: uppercase;
     }
 
+    .table__container {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+    }
+
     .table {
         border: 1.5px solid #616161;
         border-collapse: collapse;
-        position: absolute;
-        bottom: 10px;
-        left: 10px;
-        transform: translateY(-100%)
+        margin: 10px;
+        width: 65%;
     }
 
     tr {

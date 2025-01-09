@@ -27,8 +27,8 @@ export default function IntersemesterAppeal({specialties, shifts, semesters, per
     useEffect(() => setData('period_id', period.id), []);
 
     return (
-        <FormLayout title="Solicitud de Examen Extraordinario" period={period}>
-            <Head title="Solicitud de Examen Extraordinario" />
+        <FormLayout title="Solicitud de Recursamiento Intersemestral" period={period}>
+            <Head title="Solicitud de Recursamiento Intersemestral" />
 
             <ExtraordinaryPaymentForm
                 semesters={semesters}

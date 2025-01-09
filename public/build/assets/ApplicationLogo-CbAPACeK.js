@@ -1,1 +1,0 @@
-import{j as o}from"./app-Cw66xjMM.js";import{L as t}from"./logo_211-Av1HSfMb.js";function r(i){return o.jsx("picture",{...i,children:o.jsx("img",{src:t,alt:"Logo del CBTIS 211",title:"Logo del CBTIS 211",width:"100",height:"100",loading:"eager",decoding:"async",className:"block w-full h-full "})})}export{r as A};
