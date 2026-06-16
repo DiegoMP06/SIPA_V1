@@ -90,7 +90,8 @@ export default function Welcome({
                                             href={route("registration")}
                                             className="bg-indigo-100 hover:bg-indigo-200 text-center font-bold text-indigo-950 px-4 py-2 uppercase"
                                         >
-                                            Generar Ficha de Nuevo Ingreso
+                                            Generar Comprobante de Aportación
+                                            Voluntaria de Nuevo Ingreso
                                         </Link>
                                     )}
 
@@ -124,8 +125,8 @@ export default function Welcome({
                                             href={route("intersemester-appeal")}
                                             className="bg-indigo-100 hover:bg-indigo-200 text-center font-bold text-indigo-950 px-4 py-2 uppercase"
                                         >
-                                            Generar Comprobante de Aportación
-                                            Voluntaria de Nuevo Ingreso
+                                            Generar Ficha de Recursamiento
+                                            Intersemestral
                                         </Link>
                                     )}
 
