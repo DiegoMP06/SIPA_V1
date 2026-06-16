@@ -1,9 +1,9 @@
-import ReRegistrationForm from '@/Components/ReRegistrationForm';
-import useNormalPay from '@/Hooks/useNormalPay';
-import FormLayout from '@/Layouts/FormLayout';
-import { PeriodType, SemesterType, ShiftType, SpecialtyType } from '@/types';
-import { Head } from '@inertiajs/react';
-import {  useEffect } from 'react';
+import ReRegistrationForm from "@/Components/ReRegistrationForm";
+import useNormalPay from "@/Hooks/useNormalPay";
+import FormLayout from "@/Layouts/FormLayout";
+import { PeriodType, SemesterType, ShiftType, SpecialtyType } from "@/types";
+import { Head } from "@inertiajs/react";
+import { useEffect } from "react";
 
 type ReRegistrationProps = {
     specialties: SpecialtyType[];
@@ -12,19 +12,27 @@ type ReRegistrationProps = {
     period: PeriodType;
 };
 
-export default function ReRegistration({specialties, shifts, semester, period} : ReRegistrationProps) {
-    const name = `Reinscripción ${semester.semester} Semestre`;
+export default function ReRegistration({
+    specialties,
+    shifts,
+    semester,
+    period,
+}: ReRegistrationProps) {
+    const name = `Generar Comprobante de Aportacion Voluntaria de ${semester.semester} Semestre`;
 
-    const {
-        data,
-        setData,
-        errors,
-        alerts,
-        processing,
-        save,
-    } = useNormalPay({nameRoute: 're-registration'});
+    const { data, setData, errors, alerts, processing, save } = useNormalPay({
+        nameRoute: "re-registration",
+    });
 
-    useEffect(() => setData({...data, period_id: period.id, semester_id: semester.id}), []);
+    useEffect(
+        () =>
+            setData({
+                ...data,
+                period_id: period.id,
+                semester_id: semester.id,
+            }),
+        [],
+    );
 
     return (
         <FormLayout title={name} period={period}>

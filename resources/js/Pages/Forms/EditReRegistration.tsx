@@ -1,7 +1,13 @@
 import ReRegistration from "@/Components/ReRegistrationForm";
 import useNormalPay from "@/Hooks/useNormalPay";
 import FormLayout from "@/Layouts/FormLayout";
-import { PayType, PeriodType, SemesterType, ShiftType, SpecialtyType} from "@/types";
+import {
+    PayType,
+    PeriodType,
+    SemesterType,
+    ShiftType,
+    SpecialtyType,
+} from "@/types";
 import { Head } from "@inertiajs/react";
 import { useEffect } from "react";
 
@@ -13,21 +19,25 @@ type EditReRegistrationProps = {
     pay: PayType;
 };
 
-export default function EditReRegistration({specialties, shifts, period, pay, semesters}: EditReRegistrationProps) {
-    const {
-        data,
-        setData,
-        errors,
-        alerts,
-        processing,
-        save,
-    } = useNormalPay({nameRoute: 're-registration'});
+export default function EditReRegistration({
+    specialties,
+    shifts,
+    period,
+    pay,
+    semesters,
+}: EditReRegistrationProps) {
+    const { data, setData, errors, alerts, processing, save } = useNormalPay({
+        nameRoute: "re-registration",
+    });
 
     useEffect(() => setData(pay), []);
 
     return (
-        <FormLayout title="Editar Ficha de Reinscripción" period={period}>
-            <Head title="Editar Ficha de Reinscripción" />
+        <FormLayout
+            title="Editar Comprobante de Aportación Voluntaria"
+            period={period}
+        >
+            <Head title="Editar Comprobante de Aportación Voluntaria" />
 
             <ReRegistration
                 specialties={specialties}
