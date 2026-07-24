@@ -1,0 +1,5 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/cbtisco5/sipa.cbtis-211.com
+    - /bin/rsync -a --delete * $DEPLOYPATH
