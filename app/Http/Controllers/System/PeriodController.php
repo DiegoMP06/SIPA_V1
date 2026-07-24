@@ -27,7 +27,7 @@ class PeriodController extends Controller
      */
     public function create()
     {
-        $typePays = TypePay::all();
+        $typePays = TypePay::where('active', true)->get();
 
         return Inertia::render('Periods/Create', [
             'typePays' => $typePays
@@ -61,7 +61,7 @@ class PeriodController extends Controller
     public function show(Period $period, Request $request)
     {
         $payments = $period->pays()
-            ->when($request->search, function($query, $search) {
+            ->when($request->search, function ($query, $search) {
                 $query->where('code', 'like', "%{$search}%");
             })
             ->with('semester')
@@ -83,7 +83,7 @@ class PeriodController extends Controller
      */
     public function edit(Period $period)
     {
-        $typePays = TypePay::all();
+        $typePays = TypePay::where('active', true)->get();
 
         return Inertia::render('Periods/Edit', [
             'period' => $period,
@@ -117,16 +117,11 @@ class PeriodController extends Controller
         $period->active = $data['active'] ?? $period->active;
         $period->save();
 
-        if(isset($data['active']) && $data['active'] === true) {
-            $periods = Period::where('active', true)
+        if (isset($data['active']) && $data['active'] === true) {
+            Period::where('active', true)
                 ->where('id', '!=', $period->id)
                 ->where('type_pay_id', $period->type_pay_id)
-                ->get();
-
-            foreach($periods as $period) {
-                $period->active = false;
-                $period->save();
-            }
+                ->update(['active' => false]);
         }
 
         $route = $request->dashboard ? route('dashboard', absolute: false) : route('periods.show', $period, false);

@@ -28,10 +28,10 @@ export default function Registration({
 
     return (
         <FormLayout
-            title="Generar Comprobante de Aportacion Voluntaria de Nuevo Ingreso"
+            title="Generar Comprobante de Aportación Voluntaria de Nuevo Ingreso"
             period={period}
         >
-            <Head title="Generar Comprobante de Aportacion Voluntaria de Nuevo Ingreso" />
+            <Head title="Generar Comprobante de Aportación Voluntaria de Nuevo Ingreso" />
 
             <RegistrationForm
                 specialties={specialties}

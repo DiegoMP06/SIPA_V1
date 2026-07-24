@@ -38,7 +38,7 @@ export default function Search({ typePays }: SearchProps) {
 
     return (
         <GuestLayout>
-            <Head title="Buscar Comprobante de Aportacion Voluntaria" />
+            <Head title="Buscar Comprobante de Aportación Voluntaria" />
 
             <form className="grid grid-cols-1 gap-4" onSubmit={handleSearch}>
                 <FormItem>

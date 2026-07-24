@@ -79,7 +79,7 @@ export default function SubjectForm({alerts, handleSubmit, data, setData, errors
                                         onChange={(e) => activeSemester(e.target.checked, semester.id)}
                                     />
 
-                                    <span className="text-indigo-700 font-bold text-lg">
+                                    <span className="text-rose-700 font-bold text-lg">
                                         Semestre {semester.semester}
                                     </span>
                                 </label>

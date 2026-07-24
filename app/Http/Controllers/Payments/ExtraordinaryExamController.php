@@ -21,7 +21,7 @@ class ExtraordinaryExamController extends Controller
      */
     public function create(Request $request)
     {
-        $specialties = Specialty::all();
+        $specialties = Specialty::where('active', true)->get();
         $shifts = Shift::all();
         $semesters = Semester::all();
         $period = Period::where('active', 1)
@@ -59,7 +59,7 @@ class ExtraordinaryExamController extends Controller
             ->where('code', $request->code)
             ->count();
 
-        if($count > 10) {
+        if ($count >= 10) {
             throw ValidationException::withMessages([
                 'code' => 'Demasiados Registros en este Número de Control',
             ]);
@@ -107,7 +107,7 @@ class ExtraordinaryExamController extends Controller
             'date' => $date,
         ]);
 
-        return $pdf->stream('FICHA_EEXAMEN_EXTRAORDINARIO_'.$pay->code.'.pdf');
+        return $pdf->stream('FICHA_EEXAMEN_EXTRAORDINARIO_' . $pay->code . '.pdf');
     }
 
     /**
@@ -115,7 +115,7 @@ class ExtraordinaryExamController extends Controller
      */
     public function edit(Pay $pay)
     {
-        $specialties = Specialty::all();
+        $specialties = Specialty::where('active', true)->get();
         $shifts = Shift::all();
         $semesters = Semester::all();
         $period = $pay->period;
@@ -153,7 +153,7 @@ class ExtraordinaryExamController extends Controller
             ->where('id', '!=', $pay->id)
             ->count();
 
-        if($count > 10) {
+        if ($count >= 10) {
             throw ValidationException::withMessages([
                 'code' => 'Demasiados Registros en este Número de Control',
             ]);

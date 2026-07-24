@@ -11,8 +11,15 @@ class Subject extends Model
 
     protected $fillable = [
         'subject',
-        'sctive',
+        'active',
     ];
+
+    public function casts()
+    {
+        return [
+            'active' => 'boolean',
+        ];
+    }
 
     public function classrooms()
     {

@@ -34,6 +34,6 @@ class SemesterController extends Controller
 
         $semester->save();
 
-        return redirect()->intended(route('semesters.index', absolute: true));
+        return redirect()->intended(route('semesters.index', absolute: false));
     }
 }

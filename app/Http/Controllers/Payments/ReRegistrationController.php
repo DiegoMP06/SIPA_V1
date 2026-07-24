@@ -21,7 +21,7 @@ class ReRegistrationController extends Controller
      */
     public function create(Request $request, Semester $semester)
     {
-        $specialties = Specialty::all();
+        $specialties = Specialty::where('active', true)->get();
         $shifts = Shift::all();
         $period = Period::where('active', 1)
             ->where('type_pay_id', 2)
@@ -55,7 +55,7 @@ class ReRegistrationController extends Controller
             ->where('code', $request->code)
             ->exists();
 
-        if($pay_exists) {
+        if ($pay_exists) {
             throw ValidationException::withMessages([
                 'code' => 'Número de Control ya Registrado',
             ]);
@@ -98,7 +98,7 @@ class ReRegistrationController extends Controller
             'date' => $date,
         ]);
 
-        return $pdf->stream('FICHA_PAGO_'.$pay->code.'.pdf');
+        return $pdf->stream('FICHA_PAGO_' . $pay->code . '.pdf');
     }
 
     /**
@@ -106,7 +106,7 @@ class ReRegistrationController extends Controller
      */
     public function edit(Pay $pay)
     {
-        $specialties = Specialty::all();
+        $specialties = Specialty::where('active', true)->get();
         $shifts = Shift::all();
         $semesters = Semester::where('active', true)
             ->where('id', '!=', 1)
@@ -142,7 +142,7 @@ class ReRegistrationController extends Controller
             ->where('id', '!=', $pay->id)
             ->exists();
 
-        if($pay_exists) {
+        if ($pay_exists) {
             throw ValidationException::withMessages([
                 'code' => 'Número de Control ya Registrados',
             ]);

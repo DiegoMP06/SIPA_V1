@@ -18,7 +18,7 @@ export default function ReRegistration({
     semester,
     period,
 }: ReRegistrationProps) {
-    const name = `Generar Comprobante de Aportacion Voluntaria de ${semester.semester} Semestre`;
+    const name = `Generar Comprobante de Aportación Voluntaria de ${semester.semester} Semestre`;
 
     const { data, setData, errors, alerts, processing, save } = useNormalPay({
         nameRoute: "re-registration",

@@ -21,7 +21,7 @@ class RegistrationController extends Controller
      */
     public function create(Request $request)
     {
-        $specialties = Specialty::all();
+        $specialties = Specialty::where('active', true)->get();
         $shifts = Shift::all();
         $period = Period::where('active', 1)
             ->where('type_pay_id', 1)
@@ -53,7 +53,7 @@ class RegistrationController extends Controller
         $pay_exists = Pay::where('period_id', $request->period_id)
             ->where('code', $request->code)->exists();
 
-        if($pay_exists) {
+        if ($pay_exists) {
             throw ValidationException::withMessages([
                 'code' => 'Número de Ficha ya Registrada',
             ]);
@@ -90,7 +90,7 @@ class RegistrationController extends Controller
         $code = '';
         $quantity = strlen($pay->code);
 
-        for($i = 0; $i < ($NUM_CHARS - $quantity); $i++)
+        for ($i = 0; $i < ($NUM_CHARS - $quantity); $i++)
             $code .= '0';
 
         $pay->code = $code . $pay->code;
@@ -105,7 +105,7 @@ class RegistrationController extends Controller
             'date' => $date,
         ]);
 
-        return $pdf->stream('FICHA_PAGO_'.$pay->code.'.pdf');
+        return $pdf->stream('FICHA_PAGO_' . $pay->code . '.pdf');
     }
 
     /**
@@ -113,7 +113,7 @@ class RegistrationController extends Controller
      */
     public function edit(Pay $pay)
     {
-        $specialties = Specialty::all();
+        $specialties = Specialty::where('active', true)->get();
         $shifts = Shift::all();
         $semesters = Semester::all();
         $period = $pay->period;
@@ -147,7 +147,7 @@ class RegistrationController extends Controller
             ->where('id', '!=', $pay->id)
             ->exists();
 
-        if($pay_exists) {
+        if ($pay_exists) {
             throw ValidationException::withMessages([
                 'code' => 'Número de Ficha ya Registrada',
             ]);

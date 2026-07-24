@@ -8,4 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class Specialty extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'specialty',
+        'code',
+        'active',
+    ];
+
+    protected $casts = [
+        'active' => 'boolean',
+    ];
 }

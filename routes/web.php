@@ -10,14 +10,16 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\System\ClassroomsSubjectsController;
 use App\Http\Controllers\System\PeriodController;
 use App\Http\Controllers\System\SemesterController;
+use App\Http\Controllers\System\SpecialtyController;
 use App\Http\Controllers\System\SubjectController;
 use App\Http\Controllers\System\TeacherController;
 use App\Http\Controllers\System\TeachersSubjectsController;
+use App\Http\Controllers\System\TypePayController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', HomeController::class)->name('home');
 
-Route::middleware(['guest', 'can.pay'])->group(function() {
+Route::middleware(['guest', 'can.pay'])->group(function () {
     Route::get('/registration/report', [RegistrationController::class, 'create'])->name('registration')->middleware(['can.registration']);
     Route::post('/registration/report', [RegistrationController::class, 'store'])->name('registration.store')->middleware(['can.registration']);
     Route::get('/registration/report/{pay}/edit', [RegistrationController::class, 'edit'])->name('registration.edit')->middleware(['can.registration', 'is.current-period', 'is.registration']);
@@ -43,7 +45,7 @@ Route::middleware(['guest', 'can.pay'])->group(function() {
     Route::get('/search/{type_pay}/{code}', [SearchController::class, 'show'])->name('search.show')->where('code', '[0-9]+');
 });
 
-Route::middleware(['open.area'])->group(function() {
+Route::middleware(['open.area'])->group(function () {
     Route::get('/registration/report/{pay}', [RegistrationController::class, 'show'])->name('registration.show')->middleware(['is.registration']);
     Route::get('/re-registration/report/{pay}', [ReRegistrationController::class, 'show'])->name('re-registration.show')->middleware(['is.re-registration']);
     Route::get('/extraordinary-exam/report/{pay}', [ExtraordinaryExamController::class, 'show'])->name('extraordinary-exam.show')->middleware(['is.extraordinary-exam']);
@@ -69,6 +71,18 @@ Route::middleware('auth')->group(function () {
     Route::get('/teachers/create', [TeacherController::class, 'create'])->name('teachers.create');
     Route::post('/teachers', [TeacherController::class, 'store'])->name('teachers.store');
 
+    Route::get('/specialties', [SpecialtyController::class, 'index'])->name('specialties.index');
+    Route::get('/specialties/create', [SpecialtyController::class, 'create'])->name('specialties.create');
+    Route::post('/specialties', [SpecialtyController::class, 'store'])->name('specialties.store');
+    Route::get('/specialties/{specialty}/edit', [SpecialtyController::class, 'edit'])->name('specialties.edit');
+    Route::patch('/specialties/{specialty}', [SpecialtyController::class, 'update'])->name('specialties.update');
+
+    Route::get('/type-pays', [TypePayController::class, 'index'])->name('type-pays.index');
+    Route::get('/type-pays/create', [TypePayController::class, 'create'])->name('type-pays.create');
+    Route::post('/type-pays', [TypePayController::class, 'store'])->name('type-pays.store');
+    Route::get('/type-pays/{typePay}/edit', [TypePayController::class, 'edit'])->name('type-pays.edit');
+    Route::patch('/type-pays/{typePay}', [TypePayController::class, 'update'])->name('type-pays.update');
+
     Route::patch('/semesters/{semester}', [SemesterController::class, 'update'])->name('semesters.update');
 
     Route::get('/periods/{period}', [PeriodController::class, 'show'])->name('periods.show');
@@ -93,4 +107,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/subjects-teachers/{subjects_teacher}', [TeachersSubjectsController::class, 'destroy'])->name('subjects-teachers.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

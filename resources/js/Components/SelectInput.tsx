@@ -27,7 +27,7 @@ export default forwardRef(function SelectInput(
         <select
             {...props}
             className={
-                'border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm placeholder:text-gray-500 text-gray-700 block w-full ' +
+                'border-gray-400 focus:border-rose-500 focus:ring-rose-500 rounded-md shadow-sm placeholder:text-gray-500 text-gray-800 block w-full ' +
                 className
             }
         >

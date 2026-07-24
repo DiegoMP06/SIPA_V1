@@ -36,31 +36,31 @@ export default function Classrooms({classrooms, semesters, specialties, subject}
         <>
             <section className="space-y-8 my-16">
                 <div className="flex gap-4 items-center justify-between">
-                    <h2 className="text-2xl font-bold text-indigo-700">
+                    <h2 className="text-2xl font-bold text-rose-700">
                         Grupos de la Materia:
                     </h2>
 
                     <button
                         title="Agregar Grupo"
                         type="button"
-                        className="bg-indigo-700 hover:bg-indigo-600 transition-colors text-white p-2"
+                        className="bg-rose-700 hover:bg-rose-600 transition-colors text-white p-2"
                         onClick={() => setActiveModal(true)}
                     >
                         <svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" className="size-6" viewBox="0 0 24 24"><path fill="currentColor" d="M11 13H5v-2h6V5h2v6h6v2h-6v6h-2z"/></svg>
                     </button>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     { classrooms.map(classrooms => (
-                        <div key={classrooms.id} className="p-4 bg-white shadow-md flex items-center justify-between gap-4">
-                            <p className="font-bold text-gray-700 text-lg">
+                        <div key={classrooms.id} className="p-5 bg-white shadow-md hover:shadow-lg transition-shadow duration-300 rounded-xl flex items-center justify-between gap-4 border border-rose-200">
+                            <p className="font-bold text-gray-800 text-lg">
                                 { classrooms.semester.semester }{ classrooms.semester.group } - { classrooms.specialty.specialty }
                             </p>
 
                             { canDelete && (
                                 <button
                                     type="button"
-                                    className="transition-colors bg-indigo-50 text-indigo-700 p-2 hover:bg-indigo-100"
+                                    className="transition-colors bg-rose-100 text-rose-800 p-2 hover:bg-rose-200"
                                     title="Quitar Grupo"
                                     onClick={() => handleDelete(classrooms.id)}
                                 >

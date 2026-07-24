@@ -12,6 +12,21 @@ export default {
 
     theme: {
         extend: {
+            colors: {
+                rose: {
+                    50: '#fff7f8',
+                    100: '#ffe7ec',
+                    200: '#ffd0da',
+                    300: '#ffb0c1',
+                    400: '#ff7fa2',
+                    500: '#f45b84',
+                    600: '#e13f6d',
+                    700: '#be315a',
+                    800: '#9f294e',
+                    900: '#852647',
+                    950: '#4b1124',
+                },
+            },
             backgroundImage: {
                 'main': 'url(/img/fondo.jpg)'
             },

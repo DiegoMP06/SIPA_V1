@@ -58,9 +58,11 @@ export default function useSubjectsTeachers({currentTeachers = [], subject} : Pr
 
     const search = (page?: number) => {
         setLoading(true);
-        page && setData({...data, page});
+        const currentPage = page ?? data.page;
+        const currentSearch = data.search;
+        if (page) setData(prev => ({...prev, page: currentPage}));
 
-        Services.getSubjectsTeachers(page ? page : data.page, data.search)
+        Services.getSubjectsTeachers(currentPage, currentSearch)
         .then(({data}) =>
             setTeachers(data))
         .catch(() => Swal.fire({

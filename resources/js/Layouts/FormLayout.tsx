@@ -15,7 +15,7 @@ export default function FormLayout({ children, title, period } : FormLayoutProps
   return (
     <>
         <header className="max-w-4xl mx-auto px-4 mt-6">
-            <div className="flex p-4 bg-white shadow items-center justify-between gap-4">
+            <div className="flex p-4 bg-white shadow-lg rounded-2xl items-center justify-between gap-4 border border-rose-200">
                 <picture>
                     <img
                         src={LOGO211}
@@ -55,18 +55,18 @@ export default function FormLayout({ children, title, period } : FormLayoutProps
         </header>
 
         <div className="max-w-4xl my-6 px-4 mx-auto">
-            <Link href={route('home')} className="bg-indigo-700 hover:bg-indigo-600 text-white font-bold py-2 px-4 inline-block">
+            <Link href={route('home')} className="bg-rose-700 hover:bg-rose-600 text-white font-bold py-2 px-4 inline-block">
                 Volver
             </Link>
         </div>
 
-        <h1 className="text-4xl font-bold text-center text-indigo-700 px-4">
+        <h1 className="text-4xl font-bold text-center text-rose-700 px-4">
             { title }
         </h1>
 
         { children }
 
-        <section className="max-w-4xl mx-auto px-4 py-6 mt-16 border-t-2 border-indigo-300 flex justify-around gap-4">
+        <section className="max-w-4xl mx-auto px-4 py-6 mt-16 border-t-2 border-rose-300 flex justify-around gap-4">
             <picture>
                 <img
                     src={LOGO211}
@@ -107,7 +107,7 @@ export default function FormLayout({ children, title, period } : FormLayoutProps
             </picture>
         </section>
 
-        <footer className="bg-indigo-700">
+        <footer className="bg-rose-700">
             <p className="max-w-4xl text-lg lg:text-xl font-bold text-center mx-auto px-4 py-3 text-white">
                 Todos los Derechos Reservados CBTis No. 211 { new Date().getFullYear() }&copy;. Made by Diego Meneses.
             </p>

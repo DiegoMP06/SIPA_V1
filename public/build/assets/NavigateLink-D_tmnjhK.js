@@ -1,0 +1,1 @@
+import{j as r,a as t}from"./app-CI9DFOGs.js";function n({children:o,name:e}){return r.jsx(t,{href:route(e),className:"px-4 py-2 bg-rose-700 text-white font-bold inline-block rounded-xl hover:bg-rose-600 transition-colors",children:o})}export{n as N};

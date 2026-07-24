@@ -33,12 +33,12 @@ export default function Show({auth, subject, classrooms, specialties, semesters,
                 Volver
             </NavigateLink>
 
-            <div className="bg-white p-4 shadow space-y-6 max-w-2xl my-16">
-                <h2 className="text-3xl font-bold text-gray-700">
+            <div className="bg-white rounded-2xl p-6 shadow-md border border-rose-200 space-y-6 max-w-2xl my-16">
+                <h2 className="text-3xl font-bold text-gray-800">
                     Detalles:
                 </h2>
 
-                <p className="text-indigo-700 font-bold text-xl">
+                <p className="text-rose-700 font-bold text-xl">
                     Materia { subject.active ? 'Activa' : 'No Activa' }
                 </p>
             </div>

@@ -30,13 +30,20 @@ export default function useExtraordinaryPay({nameRoute} : {nameRoute: 'extraordi
         if(data.semester_id === 0 || data.specialty_id === 0) return;
         setSubjects([]);
 
-        Services.searchClassrooms(data.specialty_id, data.semester_id)
+        const abortController = new AbortController();
+
+        Services.searchClassrooms(data.specialty_id, data.semester_id, abortController.signal)
             .then(({data}) => setSubjects(data))
-            .catch(() => Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: 'Ocurrio un error al cargar las materias',
-            }));
+            .catch((error) => {
+                if (abortController.signal.aborted) return;
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Ocurrio un error al cargar las materias',
+                });
+            });
+
+        return () => abortController.abort();
     }, [data.semester_id, data.specialty_id]);
 
 

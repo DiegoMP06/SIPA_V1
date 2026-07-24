@@ -21,7 +21,16 @@ class Period extends Model
         'type_pay_id',
     ];
 
-    public static function canPay() : bool
+    public function casts()
+    {
+        return [
+            'active' => 'boolean',
+            'start_year' => 'integer',
+            'end_year' => 'integer',
+        ];
+    }
+
+    public static function canPay(): bool
     {
         $activePeriod = self::where('active', true)
             ->first();
@@ -29,7 +38,7 @@ class Period extends Model
         return $activePeriod ? true : false;
     }
 
-    public static function canRegister() : bool
+    public static function canRegister(): bool
     {
         $periodRegister = self::where('active', true)
             ->where('type_pay_id', 1)
@@ -38,7 +47,7 @@ class Period extends Model
         return $periodRegister ? true : false;
     }
 
-    public static function canReRegister() : bool
+    public static function canReRegister(): bool
     {
         $periodRegister = self::where('active', true)
             ->where('type_pay_id', 2)
@@ -47,7 +56,7 @@ class Period extends Model
         return $periodRegister ? true : false;
     }
 
-    public static function canExtraordinaryExam() : bool
+    public static function canExtraordinaryExam(): bool
     {
         $periodRegister = self::where('active', true)
             ->where('type_pay_id', 3)
@@ -56,7 +65,7 @@ class Period extends Model
         return $periodRegister ? true : false;
     }
 
-    public static function canIntersemesterAppeal() : bool
+    public static function canIntersemesterAppeal(): bool
     {
         $periodRegister = self::where('active', true)
             ->where('type_pay_id', 4)

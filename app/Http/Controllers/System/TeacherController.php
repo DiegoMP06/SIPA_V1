@@ -39,11 +39,15 @@ class TeacherController extends Controller
             'name' => ['required', 'max:100', 'string'],
             'father_last_name' => ['required', 'max:100', 'string'],
             'mother_last_name' => ['required', 'max:100', 'string'],
-            'email' => ['required', 'max:100', 'email', 'unique:teachers,email'],
-            'phone' => ['required', 'regex:/^[0-9]{3}-[0-9]{3}-[0-9]{4}$/'],
+            'active' => ['nullable', 'boolean'],
         ]);
 
-        $teacher = Teacher::create($data);
+        $teacher = Teacher::create([
+            'name' => $data['name'],
+            'father_last_name' => $data['father_last_name'],
+            'mother_last_name' => $data['mother_last_name'],
+            'active' => $data['active'] ?? true,
+        ]);
 
         return redirect()->intended(route('teachers.show', $teacher, false));
     }
@@ -80,16 +84,12 @@ class TeacherController extends Controller
             'name' => ['max:100', 'string'],
             'father_last_name' => ['max:100', 'string'],
             'mother_last_name' => ['max:100', 'string'],
-            'email' => ['max:100', 'email', 'unique:teachers,email,'.$teacher->id],
-            'phone' => ['regex:/^[0-9]{3}-[0-9]{3}-[0-9]{4}$/'],
             'active' => ['boolean'],
         ]);
 
         $teacher->name = $data['name'] ?? $teacher->name;
         $teacher->father_last_name = $data['father_last_name'] ?? $teacher->father_last_name;
         $teacher->mother_last_name = $data['mother_last_name'] ?? $teacher->mother_last_name;
-        $teacher->email = $data['email'] ?? $teacher->email;
-        $teacher->phone = $data['phone'] ?? $teacher->phone;
         $teacher->active = $data['active'] ?? $teacher->active;
         $teacher->save();
 

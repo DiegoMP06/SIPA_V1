@@ -34,7 +34,7 @@ export default function usePeriods() {
             ];
         }
 
-        if(data.amount < 0) {
+        if(data.amount <= 0) {
             currentAlerts = [
                 ...currentAlerts,
                 'El Monto debe ser mayor a 0'
@@ -115,10 +115,11 @@ export default function usePeriods() {
                             icon: "success"
                         });
                     },
-                    onError() {
+                    onError(errors) {
+                        const errorMessages = Object.values(errors).join('\n');
                         Swal.fire({
                             title: "Error",
-                            text: "Ocurrio un Error al Actualizar el Periodo",
+                            text: errorMessages || "Ocurrio un Error al Actualizar el Periodo",
                             icon: "error"
                         });
                     }

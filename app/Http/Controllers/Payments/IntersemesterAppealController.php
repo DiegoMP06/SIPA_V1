@@ -21,7 +21,7 @@ class IntersemesterAppealController extends Controller
      */
     public function create(Request $request)
     {
-        $specialties = Specialty::all();
+        $specialties = Specialty::where('active', true)->get();
         $shifts = Shift::all();
         $semesters = Semester::all();
         $period = Period::where('active', 1)
@@ -59,7 +59,7 @@ class IntersemesterAppealController extends Controller
             ->where('code', $request->code)
             ->count();
 
-        if($count > 10) {
+        if ($count >= 10) {
             throw ValidationException::withMessages([
                 'code' => 'Demasiados Registros en este Número de Control',
             ]);
@@ -107,7 +107,7 @@ class IntersemesterAppealController extends Controller
             'date' => $date,
         ]);
 
-        return $pdf->stream('FICHA_RECURSAMIENTO_INTERSEMESTRAL_'.$pay->code.'.pdf');
+        return $pdf->stream('FICHA_RECURSAMIENTO_INTERSEMESTRAL_' . $pay->code . '.pdf');
     }
 
     /**
@@ -115,7 +115,7 @@ class IntersemesterAppealController extends Controller
      */
     public function edit(Pay $pay)
     {
-        $specialties = Specialty::all();
+        $specialties = Specialty::where('active', true)->get();
         $shifts = Shift::all();
         $semesters = Semester::all();
         $period = $pay->period;
@@ -152,7 +152,7 @@ class IntersemesterAppealController extends Controller
             ->where('code', $request->code)
             ->where('id', '!=', $pay->id)->count();
 
-        if($count > 10) {
+        if ($count >= 10) {
             throw ValidationException::withMessages([
                 'code' => 'Demasiados Registros en este Número de Control',
             ]);
@@ -173,6 +173,5 @@ class IntersemesterAppealController extends Controller
         $extraordinaryPayment->save();
 
         return redirect()->intended(route('search.show', ['code' => $pay->code, 'type_pay' => $pay->period->type_pay_id], false));
-
     }
 }

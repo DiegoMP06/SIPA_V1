@@ -13,10 +13,15 @@ class Teacher extends Model
         'name',
         'father_last_name',
         'mother_last_name',
-        'email',
-        'phone',
         'active',
     ];
+
+    public function casts()
+    {
+        return [
+            'active' => 'boolean',
+        ];
+    }
 
     public function subjects()
     {

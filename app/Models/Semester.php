@@ -11,20 +11,15 @@ class Semester extends Model
 
     public static function canRegistration() : bool
     {
-        $activeSemesters = self::where('active', true)
+        return self::where('active', true)
             ->where('id', '=', 1)
             ->exists();
-
-        return $activeSemesters;
     }
 
     public static function canReRegistration() : bool
     {
-        $activeSemesters = self::where('active', true)
+        return self::where('active', true)
             ->where('id', '!=', 1)
-            ->get()
-            ->count();
-
-        return $activeSemesters > 1 ? true : false;
+            ->count() > 0;
     }
 }

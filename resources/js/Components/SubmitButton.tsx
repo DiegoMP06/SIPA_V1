@@ -5,7 +5,7 @@ export default function SubmitButton({value = "Enviar", className = '', ...props
         <input
             type="submit"
             value={value}
-            className={"bg-indigo-700 text-white font-bold py-2 px-4 hover:bg-indigo-600 transition-colors cursor-pointer disabled:opacity-25 disabled:cursor-default disabled:bg-indigo-700 " + className}
+            className={"bg-rose-700 text-white font-bold py-2 px-4 hover:bg-rose-600 transition-colors cursor-pointer disabled:opacity-25 disabled:cursor-default disabled:bg-rose-700 " + className}
             {...props}
         />
     )

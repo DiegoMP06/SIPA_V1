@@ -55,37 +55,37 @@ export default function Show({auth, period, payments, page, search} : PageProps<
             </NavigateLink>
 
             <div className="flex flex-col lg:flex-row lg:items-center my-16 gap-8">
-                <div className="flex-1 bg-white p-4 shadow space-y-6">
-                    <h2 className="text-3xl font-bold text-gray-700">
+                <div className="flex-1 bg-white rounded-2xl p-6 shadow-md border border-rose-200 space-y-6">
+                    <h2 className="text-3xl font-bold text-gray-800">
                         Detalles:
                     </h2>
 
                     <div>
-                        <p className="text-indigo-700 font-bold text-xl">
+                        <p className="text-rose-700 font-bold text-xl">
                             Periodo { period.active ? 'Activo' : 'No Activo' }
                         </p>
 
-                        <p className="text-indigo-700 font-bold text-xl">
+                        <p className="text-rose-700 font-bold text-xl">
                             { period.type_pay.type }
                         </p>
 
-                        <p className="text-indigo-700 font-bold text-xl">
+                        <p className="text-rose-700 font-bold text-xl">
                             Número de Cuenta: { '' }
-                            <span className="text-gray-700">
+                            <span className="text-gray-800">
                                 { period.account_number }
                             </span>
                         </p>
 
-                        <p className="text-indigo-700 font-bold text-xl">
+                        <p className="text-rose-700 font-bold text-xl">
                             Clabe Interbancaria: { '' }
-                            <span className="text-gray-700">
+                            <span className="text-gray-800">
                                 { period.interbank_code }
                             </span>
                         </p>
 
-                        <p className="text-indigo-700 font-bold text-xl">
+                        <p className="text-rose-700 font-bold text-xl">
                             Monto: { '' }
-                            <span className="text-gray-700">
+                            <span className="text-gray-800">
                                 { formatCurrency(period.amount) }
                             </span>
                         </p>
@@ -102,45 +102,45 @@ export default function Show({auth, period, payments, page, search} : PageProps<
             </div>
 
             { hasPayments ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-10">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-10">
                     { payments.data.map(payment => (
-                        <div key={payment.id} className="space-y-4 p-4 bg-white shadow-md">
-                            <h3 className="font-bold text-indigo-700 text-xl lg:text-2xl">
+                        <div key={payment.id} className="space-y-4 p-5 bg-white shadow-md hover:shadow-xl transition-shadow duration-300 rounded-2xl border border-rose-200">
+                            <h3 className="font-bold text-rose-700 text-xl lg:text-2xl">
                                 { payment.name } { payment.father_last_name } { payment.mother_last_name }
                             </h3>
 
                             <div className="space-y-1">
-                                <p className="font-bold text-indigo-700">
+                                <p className="font-bold text-rose-700">
                                     { payment.semester_id === 1 ? 'Número de Ficha' : 'Número de Control' }: { '' }
-                                    <span className="text-gray-700">
+                                    <span className="text-gray-800">
                                         { payment.code }
                                     </span>
                                 </p>
 
-                                <p className="font-bold text-indigo-700">
+                                <p className="font-bold text-rose-700">
                                     Grupo: { '' }
-                                    <span className="text-gray-700">
+                                    <span className="text-gray-800">
                                         { payment.semester.semester }{ payment.semester.group }
                                     </span>
                                 </p>
 
-                                <p className="font-bold text-indigo-700">
+                                <p className="font-bold text-rose-700">
                                     Especialidad: { '' }
-                                    <span className="text-gray-700">
+                                    <span className="text-gray-800">
                                         { payment.specialty.specialty }
                                     </span>
                                 </p>
 
-                                <p className="font-bold text-indigo-700">
+                                <p className="font-bold text-rose-700">
                                     Turno: { '' }
-                                    <span className="text-gray-700">
+                                    <span className="text-gray-800">
                                         { payment.shift.shift }
                                     </span>
                                 </p>
                             </div>
 
                             <div>
-                                <a target="_blank" href={route(nameRoute + '.show', {id: payment.id})} className="text-white font-bold bg-indigo-700 hover:bg-indigo-600 transition-colors px-4 py-2 inline-block">
+                                <a target="_blank" href={route(nameRoute + '.show', {id: payment.id})} className="text-white font-bold bg-rose-700 hover:bg-rose-600 transition-colors px-4 py-2 inline-block">
                                     Ver Ficha de Pago
                                 </a>
                             </div>
@@ -148,7 +148,7 @@ export default function Show({auth, period, payments, page, search} : PageProps<
                     ))}
                 </div>
             ) : (
-                <p className="text-xl font-bold text-gray-600 my-40 text-center">
+                <p className="text-xl font-bold text-gray-700 my-40 text-center">
                     No Hay Pagos Disponibles
                 </p>
             ) }

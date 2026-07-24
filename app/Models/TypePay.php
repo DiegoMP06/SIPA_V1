@@ -9,6 +9,16 @@ class TypePay extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'type',
+        'code',
+        'active',
+    ];
+
+    protected $casts = [
+        'active' => 'boolean',
+    ];
+
     public function periods()
     {
         return $this->hasMany(Period::class);

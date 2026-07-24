@@ -13,14 +13,12 @@ use Illuminate\Validation\ValidationException;
 
 class SearchController extends Controller
 {
-    public $search;
-
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
-        $typePays = TypePay::all();
+        $typePays = TypePay::where('active', true)->get();
 
         return Inertia::render('Search', [
             'typePays' => $typePays,
@@ -37,28 +35,27 @@ class SearchController extends Controller
             'type_pay_id' => 'required|numeric|exists:type_pays,id',
         ]);
 
-        $this->search = $data['search'];
         $periodActive = Period::where('active', true)
             ->where('type_pay_id', $data['type_pay_id'])
             ->first();
 
-        if(!$periodActive) {
+        if (!$periodActive) {
             throw ValidationException::withMessages([
                 'search' => 'El Periodo de la Ficha no esta activo',
             ]);
         }
 
-        $pay = Pay::where('code', $this->search)
+        $pay = Pay::where('code', $data['search'])
             ->where('period_id', $periodActive->id)
             ->first();
 
-        if(!$pay) {
+        if (!$pay) {
             throw ValidationException::withMessages([
                 'search' => 'No Existe Ninguna Ficha con las Caracteristicas',
             ]);
         }
 
-        return redirect()->intended(route('search.show', ['type_pay' => $data['type_pay_id'], 'code'=> $pay->code], false));
+        return redirect()->intended(route('search.show', ['type_pay' => $data['type_pay_id'], 'code' => $pay->code], false));
     }
 
     /**
@@ -68,7 +65,7 @@ class SearchController extends Controller
     {
         $period = $typePay->periods()->where('active', true)->first();
 
-        if(!$period) {
+        if (!$period) {
             return redirect()->intended(route('search'));
         }
 
@@ -76,12 +73,12 @@ class SearchController extends Controller
             ->with('semester', 'shift', 'specialty', 'extraordinaryPayment')
             ->get();
 
-        if($pays->count() === 0) {
+        if ($pays->count() === 0) {
             return redirect()->intended(route('search', absolute: false));
         }
 
-        if($typePay->id === 3 || $typePay->id === 4) {
-            foreach($pays as $pay) {
+        if ($typePay->id === 3 || $typePay->id === 4) {
+            foreach ($pays as $pay) {
                 $pay->extraordinaryPayment->load('subject', 'teacher');
             }
         }

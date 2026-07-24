@@ -33,10 +33,10 @@ export default function EditRegistration({
 
     return (
         <FormLayout
-            title="Editar Comprobante de Aportacion Voluntaria de Nuevo Ingreso"
+            title="Editar Comprobante de Aportación Voluntaria de Nuevo Ingreso"
             period={period}
         >
-            <Head title="Editar Comprobante de Aportacion Voluntaria de Nuevo Ingreso" />
+            <Head title="Editar Comprobante de Aportación Voluntaria de Nuevo Ingreso" />
 
             <RegistrationForm
                 specialties={specialties}
