@@ -1,1 +1,0 @@
-import{j as e}from"./app-CI9DFOGs.js";function t({className:o="",...r}){return e.jsx("input",{...r,type:"checkbox",className:"rounded border-gray-300 text-rose-600 shadow-sm focus:ring-rose-500 "+o})}export{t as C};

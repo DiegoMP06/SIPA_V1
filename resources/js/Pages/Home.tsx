@@ -11,36 +11,154 @@ type HomeProps = {
     semesters: SemesterType[];
 };
 
+// Simple inline icons (no extra dependency needed)
+function IconDocument({ className = "" }: { className?: string }) {
+    return (
+        <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            className={className}
+            aria-hidden="true"
+        >
+            <path
+                d="M7 3h7l5 5v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z"
+                stroke="currentColor"
+                strokeWidth="1.6"
+                strokeLinejoin="round"
+            />
+            <path
+                d="M14 3v5h5"
+                stroke="currentColor"
+                strokeWidth="1.6"
+                strokeLinejoin="round"
+            />
+            <path
+                d="M9 12.5h6M9 15.5h6M9 9.5h2"
+                stroke="currentColor"
+                strokeWidth="1.6"
+                strokeLinecap="round"
+            />
+        </svg>
+    );
+}
+
+function IconBank({ className = "" }: { className?: string }) {
+    return (
+        <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            className={className}
+            aria-hidden="true"
+        >
+            <path
+                d="M3 10 12 4l9 6"
+                stroke="currentColor"
+                strokeWidth="1.6"
+                strokeLinejoin="round"
+            />
+            <path
+                d="M5 10v9M9.5 10v9M14.5 10v9M19 10v9"
+                stroke="currentColor"
+                strokeWidth="1.6"
+                strokeLinecap="round"
+            />
+            <path
+                d="M3 20h18"
+                stroke="currentColor"
+                strokeWidth="1.6"
+                strokeLinecap="round"
+            />
+        </svg>
+    );
+}
+
+function IconShield({ className = "" }: { className?: string }) {
+    return (
+        <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            className={className}
+            aria-hidden="true"
+        >
+            <path
+                d="M12 3.5 19 6v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-2.5Z"
+                stroke="currentColor"
+                strokeWidth="1.6"
+                strokeLinejoin="round"
+            />
+            <path
+                d="m9.2 12 2 2 3.6-3.8"
+                stroke="currentColor"
+                strokeWidth="1.6"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+            />
+        </svg>
+    );
+}
+
+function IconHelp({ className = "" }: { className?: string }) {
+    return (
+        <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            className={className}
+            aria-hidden="true"
+        >
+            <circle
+                cx="12"
+                cy="12"
+                r="9"
+                stroke="currentColor"
+                strokeWidth="1.6"
+            />
+            <path
+                d="M9.5 9.3a2.5 2.5 0 1 1 3.7 2.2c-.8.5-1.2.9-1.2 1.8"
+                stroke="currentColor"
+                strokeWidth="1.6"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+            />
+            <circle cx="12" cy="16.7" r="0.9" fill="currentColor" />
+        </svg>
+    );
+}
+
+// Guided steps shown in the educational section
 const steps = [
     {
-        title: "1. Elige tu trámite",
+        icon: IconDocument,
+        title: "Elige tu trámite",
         description:
-            "Selecciona el tipo de ficha que necesitas según tu situación académica.",
+            "Selecciona la ficha de Aportación Voluntaria que corresponde a tu situación académica.",
     },
     {
-        title: "2. Completa tus datos",
+        icon: IconBank,
+        title: "Descarga tu FDDR",
         description:
-            "Ingresa la información solicitada para generar tu comprobante con precisión.",
+            "Obtén tu Ficha de Depósito Digital Referenciada lista para pagar en el banco.",
     },
     {
-        title: "3. Realiza tu pago",
+        icon: IconShield,
+        title: "Paga con confianza",
         description:
-            "Descarga tu ficha y acércate a cualquier sucursal bancaria autorizada.",
+            "Acude a cualquier sucursal autorizada; tus datos están protegidos en todo momento.",
     },
 ];
 
-const benefits = [
+// Short FAQ entries to orient students unfamiliar with the process
+const faqs = [
     {
-        title: "Proceso guiado",
-        text: "Una experiencia clara y ordenada para evitar confusiones en cada trámite.",
+        question: "¿Qué es la Aportación Voluntaria?",
+        answer: "Es una contribución que ayuda a mantener y mejorar los servicios académicos de la escuela.",
     },
     {
-        title: "Acceso rápido",
-        text: "Consulta y descarga tus comprobantes en minutos desde cualquier dispositivo.",
+        question: "¿Dónde puedo pagar mi ficha?",
+        answer: "En cualquier sucursal bancaria autorizada, usando el código que aparece en tu FDDR.",
     },
     {
-        title: "Soporte institucional",
-        text: "Tu información se gestiona de forma segura y respaldada por el sistema escolar.",
+        question: "No encuentro mi ficha, ¿qué hago?",
+        answer: 'Usa la opción "Buscar Ficha de Pago" con tu matrícula para recuperarla al instante.',
     },
 ];
 
@@ -53,307 +171,227 @@ export default function Welcome({
     canIntersemesterAppeal,
     semesters,
 }: PageProps<HomeProps>) {
-    const actions = [
-        ...(canRegister
-            ? [
-                  {
-                      href: route("registration"),
-                      title: "Nuevo ingreso",
-                      subtitle: "Aportación voluntaria",
-                      description:
-                          "Genera tu ficha para iniciar tu proceso académico con el trámite adecuado.",
-                  },
-              ]
-            : []),
-        ...(canReRegister
-            ? semesters.map((semester) => ({
-                  href: route("re-registration", { semester }),
-                  title: `${semester.semester}° Semestre`,
-                  subtitle: "Aportación voluntaria",
-                  description:
-                      "Genera tu comprobante para continuar con tu trayectoria educativa.",
-              }))
-            : []),
-        ...(canExtraordinaryExam
-            ? [
-                  {
-                      href: route("extraordinary-exam"),
-                      title: "Examen extraordinario",
-                      subtitle: "Ficha especial",
-                      description:
-                          "Solicita la ficha para presentar evaluaciones extraordinarias.",
-                  },
-              ]
-            : []),
-        ...(canIntersemesterAppeal
-            ? [
-                  {
-                      href: route("intersemester-appeal"),
-                      title: "Recursamiento intersemestral",
-                      subtitle: "Ficha especial",
-                      description:
-                          "Genera tu comprobante para tramitar tu apoyo académico correspondiente.",
-                  },
-              ]
-            : []),
-    ];
-
     return (
         <>
             <Head title="Home" />
 
-            <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,_rgba(244,91,132,0.28),_transparent_30%),linear-gradient(135deg,_#ffe7ec_0%,_#ffd0da_40%,_#fff_100%)] text-slate-800">
-                <div className="mx-auto flex min-h-screen max-w-7xl flex-col px-4 py-4 sm:px-6 lg:px-8">
-                    <header className="rounded-2xl border border-rose-200 bg-white/95 px-4 py-3 shadow-lg shadow-rose-200/50 backdrop-blur-xl sm:rounded-full">
-                        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div className="bg-main bg-no-repeat bg-cover bg-center min-h-screen bg-fixed flex">
+                <div className="bg-black/70 flex-1 flex flex-col overflow-y-auto">
+                    <header className="bg-rose-950/80 border-b border-rose-800/60 backdrop-blur-sm">
+                        <div className="container mx-auto px-4 flex justify-between py-3 items-center">
                             <Link
                                 href={route("home")}
-                                className="flex items-center gap-3 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2 rounded-xl"
+                                className="flex items-center gap-3"
                             >
-                                <picture className="bg-rose-500 block size-10 rounded-full p-2 sm:size-12">
+                                <picture className="block rounded-full bg-rose-800 p-2">
                                     <img
                                         src={DGETIDARK}
-                                        alt="Logo Plano de la Dgeti"
-                                        title="Logo Plano de la Dgeti"
+                                        alt="Logo de la DGETI"
+                                        title="Logo de la DGETI"
                                         loading="eager"
                                         decoding="async"
                                         width="100"
                                         height="100"
-                                        className="invert"
+                                        className="invert size-6 md:size-8"
                                     />
                                 </picture>
-                                <div>
-                                    <p className="text-sm font-semibold uppercase tracking-[0.3em] text-rose-500">
-                                        CBTis 211
-                                    </p>
-                                    <p className="text-sm text-slate-700">
-                                        Sistema institucional de pagos
-                                    </p>
-                                </div>
+                                <span className="font-bold text-rose-50 hidden sm:inline">
+                                    CBTis 211
+                                </span>
                             </Link>
 
-                            <nav
-                                className="flex items-center gap-3"
-                                aria-label="Navegación principal"
-                            >
+                            <nav className="flex items-center gap-4">
                                 <Link
                                     href="#tramites"
-                                    className="rounded-full px-3 py-2 text-sm font-semibold text-slate-700 transition hover:bg-rose-100 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2"
+                                    className="text-rose-100 font-semibold transition-colors hover:text-rose-300"
                                 >
                                     Trámites
                                 </Link>
+
                                 {auth.user ? (
                                     <Link
                                         href={route("dashboard")}
-                                        className="rounded-full bg-rose-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-rose-600 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2"
+                                        className="rounded-full bg-rose-100 px-4 py-2 text-sm font-semibold text-rose-950 transition-colors hover:bg-white"
                                     >
                                         Dashboard
                                     </Link>
                                 ) : (
                                     <Link
                                         href={route("login")}
-                                        className="rounded-full border border-rose-300 bg-white px-4 py-2 text-sm font-semibold text-rose-800 transition hover:bg-rose-100 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2"
+                                        className="rounded-full border border-rose-400/50 px-4 py-2 text-sm font-semibold text-rose-100 transition-colors hover:bg-rose-900"
                                     >
-                                        Iniciar sesión
+                                        Iniciar Sesión
                                     </Link>
                                 )}
                             </nav>
                         </div>
                     </header>
 
-                    <main className="flex-1 py-8 sm:py-12 lg:py-16">
-                        <section className="grid items-center gap-8 rounded-[2rem] border border-rose-200 bg-white/95 p-6 shadow-xl shadow-rose-200/50 backdrop-blur-xl transition-all duration-300 lg:grid-cols-[1.2fr_0.8fr] lg:gap-10 lg:p-10">
-                            <div className="space-y-6">
-                                <span className="inline-flex w-fit rounded-full border border-rose-300 bg-rose-100 px-3 py-1 text-sm font-semibold uppercase tracking-[0.25em] text-rose-700">
-                                    Gestión académica y financiera
-                                </span>
-                                <div className="space-y-4">
-                                    <h1 className="text-4xl font-black leading-tight text-slate-900 sm:text-5xl lg:text-6xl">
-                                        Paga tus fichas de forma rápida, segura
-                                        y clara.
-                                    </h1>
-                                    <p className="max-w-2xl text-lg leading-8 text-slate-700">
-                                        Una plataforma pensada para que
-                                        estudiantes y familias gestionen sus
-                                        trámites de pago sin complicaciones, con
-                                        información ordenada y acompañamiento
-                                        institucional.
-                                    </p>
-                                </div>
-
-                                <div className="flex flex-col gap-3 sm:flex-row">
-                                    <Link
-                                        href="#tramites"
-                                        className="rounded-full bg-rose-500 px-6 py-3 text-center font-semibold text-white transition hover:bg-rose-600 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2"
-                                    >
-                                        Iniciar trámite
-                                    </Link>
-                                    <Link
-                                        href={route("search")}
-                                        className="rounded-full border border-rose-300 bg-white px-6 py-3 text-center font-semibold text-rose-800 transition hover:bg-rose-100 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2"
-                                    >
-                                        Buscar comprobante
-                                    </Link>
-                                </div>
-                            </div>
-
-                            <div className="rounded-[1.5rem] border border-rose-200 bg-gradient-to-br from-rose-100 via-white to-rose-100 p-6">
-                                <div className="space-y-4">
-                                    <div className="rounded-2xl border border-rose-300 bg-white p-4">
-                                        <p className="text-sm font-semibold uppercase tracking-[0.3em] text-rose-700">
-                                            Acceso inmediato
-                                        </p>
-                                        <p className="mt-3 text-3xl font-bold text-slate-900">
-                                            Trámites digitales
-                                        </p>
-                                    </div>
-                                    <div className="grid gap-3 sm:grid-cols-2">
-                                        <div className="rounded-2xl border border-rose-200 bg-white/95 p-4">
-                                            <p className="text-2xl font-bold text-slate-900">
-                                                100%
-                                            </p>
-                                            <p className="text-sm text-slate-700">
-                                                orientado al estudiante
-                                            </p>
-                                        </div>
-                                        <div className="rounded-2xl border border-rose-200 bg-white/95 p-4">
-                                            <p className="text-2xl font-bold text-slate-900">
-                                                24/7
-                                            </p>
-                                            <p className="text-sm text-slate-700">
-                                                disponible en línea
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                    <main className="flex-1">
+                        <section className="text-center px-4 py-12 md:py-16">
+                            <span className="inline-block rounded-full bg-rose-900/80 text-rose-200 text-sm font-semibold px-3 py-1 tracking-wide uppercase border border-rose-700/50">
+                                Sistema Institucional de Pagos Académicos
+                            </span>
+                            <h1 className="mt-4 text-3xl md:text-5xl font-extrabold text-white max-w-2xl mx-auto tracking-tight">
+                                Genera y paga tu ficha de Aportación Voluntaria
+                            </h1>
+                            <p className="mt-4 text-rose-100 max-w-xl mx-auto">
+                                CBTis No. 211 ofrece un proceso claro, guiado y
+                                seguro para toda la comunidad estudiantil.
+                            </p>
                         </section>
 
-                        <section
-                            id="tramites"
-                            className="mt-10 grid gap-8 lg:grid-cols-[1.1fr_0.9fr]"
-                        >
-                            <div className="rounded-[2rem] border border-rose-200 bg-white/95 p-6 shadow-lg shadow-rose-200/50 backdrop-blur-xl transition-all duration-300 lg:p-8">
-                                <div className="flex items-center justify-between">
-                                    <div>
-                                        <p className="text-sm font-semibold uppercase tracking-[0.3em] text-rose-700">
-                                            Trámites disponibles
-                                        </p>
-                                        <h2 className="mt-2 text-2xl font-bold text-slate-900">
-                                            Elige el proceso que necesitas
-                                        </h2>
-                                    </div>
-                                </div>
+                        <section id="tramites" className="px-4 pb-16">
+                            <div className="bg-rose-900/80 border border-rose-700/50 shadow-lg shadow-rose-950/30 max-w-2xl mx-auto p-6 rounded-2xl space-y-6 backdrop-blur-sm">
+                                <h2 className="text-center text-rose-50 font-bold text-2xl">
+                                    Trámites disponibles
+                                </h2>
 
                                 {canPay && !auth.user ? (
-                                    <div className="mt-8 grid gap-4">
-                                        {actions.length > 0 ? (
-                                            actions.map((item) => (
-                                                <Link
-                                                    key={item.title}
-                                                    href={item.href}
-                                                    className="group rounded-2xl border border-rose-200 bg-gradient-to-r from-rose-100 to-white p-5 transition-all duration-300 hover:-translate-y-1 hover:border-rose-400 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2"
-                                                >
-                                                    <div className="flex items-start justify-between gap-4">
-                                                        <div>
-                                                            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-rose-700">
-                                                                {item.subtitle}
-                                                            </p>
-                                                            <h3 className="mt-2 text-lg font-bold text-slate-900">
-                                                                {item.title}
-                                                            </h3>
-                                                            <p className="mt-2 text-sm leading-6 text-slate-700">
-                                                                {
-                                                                    item.description
-                                                                }
-                                                            </p>
-                                                        </div>
-                                                        <span className="mt-1 shrink-0 rounded-full bg-rose-200 px-3 py-1 text-sm font-semibold text-rose-800 transition group-hover:bg-rose-300">
-                                                            Ir al trámite
-                                                        </span>
-                                                    </div>
-                                                </Link>
-                                            ))
-                                        ) : (
-                                            <div
-                                                className="rounded-2xl border border-dashed border-rose-300 bg-rose-100/50 p-6 text-center text-slate-700"
-                                                role="status"
+                                    <nav className="flex flex-col gap-3">
+                                        {canRegister && (
+                                            <Link
+                                                href={route("registration")}
+                                                className="rounded-xl bg-rose-50 text-rose-950 text-center font-semibold px-4 py-3 transition-all duration-200 hover:bg-white hover:-translate-y-0.5"
                                             >
-                                                No hay trámites disponibles en
-                                                este momento.
-                                            </div>
+                                                Ficha de Aportación Voluntaria
+                                                de Nuevo Ingreso
+                                            </Link>
+                                        )}
+
+                                        {canReRegister &&
+                                            semesters.map((semester) => (
+                                                <Link
+                                                    key={semester.id}
+                                                    href={route(
+                                                        "re-registration",
+                                                        { semester },
+                                                    )}
+                                                    className="rounded-xl bg-rose-50 text-rose-950 text-center font-semibold px-4 py-3 transition-all duration-200 hover:bg-white hover:-translate-y-0.5"
+                                                >
+                                                    Ficha de Aportación
+                                                    Voluntaria de{" "}
+                                                    {semester.semester}°
+                                                    Semestre
+                                                </Link>
+                                            ))}
+
+                                        {canExtraordinaryExam && (
+                                            <Link
+                                                href={route(
+                                                    "extraordinary-exam",
+                                                )}
+                                                className="rounded-xl bg-rose-50 text-rose-950 text-center font-semibold px-4 py-3 transition-all duration-200 hover:bg-white hover:-translate-y-0.5"
+                                            >
+                                                Ficha de Examen Extraordinario
+                                            </Link>
+                                        )}
+
+                                        {canIntersemesterAppeal && (
+                                            <Link
+                                                href={route(
+                                                    "intersemester-appeal",
+                                                )}
+                                                className="rounded-xl bg-rose-50 text-rose-950 text-center font-semibold px-4 py-3 transition-all duration-200 hover:bg-white hover:-translate-y-0.5"
+                                            >
+                                                Ficha de Recursamiento
+                                                Intersemestral
+                                            </Link>
                                         )}
 
                                         <Link
                                             href={route("search")}
-                                            className="rounded-2xl border border-rose-300 bg-rose-100 p-5 text-center font-semibold text-rose-800 transition hover:bg-rose-200 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2"
+                                            className="rounded-xl border border-rose-400/70 text-rose-50 text-center font-semibold px-4 py-3 transition-all duration-200 hover:bg-rose-800/50"
                                         >
-                                            Buscar comprobante de aportación
-                                            voluntaria
+                                            Buscar Ficha de Pago
                                         </Link>
-                                    </div>
+                                    </nav>
                                 ) : (
-                                    <div
-                                        className="mt-8 rounded-2xl border border-dashed border-rose-300 bg-rose-100/50 p-8 text-center text-slate-700"
-                                        role="status"
-                                    >
-                                        Inicia sesión para acceder a tus
-                                        opciones de trámites institucionales.
-                                    </div>
+                                    <p className="text-center text-rose-200 font-medium py-10">
+                                        No hay trámites disponibles por el
+                                        momento.
+                                    </p>
                                 )}
                             </div>
+                        </section>
 
-                            <div className="space-y-6">
-                                <div className="rounded-[2rem] border border-rose-200 bg-white/95 p-6 shadow-lg shadow-rose-200/50 backdrop-blur-xl transition-all duration-300 lg:p-8">
-                                    <p className="text-sm font-semibold uppercase tracking-[0.3em] text-rose-700">
-                                        ¿Cómo funciona?
+                        <section className="bg-rose-950/80 border-y border-rose-800/50 px-4 py-16">
+                            <div className="container mx-auto max-w-5xl">
+                                <div className="text-center max-w-2xl mx-auto mb-10">
+                                    <h2 className="text-2xl md:text-3xl font-bold text-rose-50">
+                                        ¿Cómo funciona tu trámite?
+                                    </h2>
+                                    <p className="mt-2 text-rose-200">
+                                        Sigue estos pasos para completar tu
+                                        Aportación Voluntaria sin contratiempos.
                                     </p>
-                                    <div className="mt-6 space-y-4">
-                                        {steps.map((step, index) => (
+                                </div>
+
+                                <div className="grid gap-6 md:grid-cols-3">
+                                    {steps.map((step, index) => {
+                                        const Icon = step.icon;
+                                        return (
                                             <div
                                                 key={step.title}
-                                                className="rounded-2xl border border-rose-200 bg-rose-100/50 p-4 transition-all duration-300 hover:bg-rose-200/50"
+                                                className="rounded-2xl border border-rose-800/50 bg-rose-900 p-6 text-center"
                                             >
-                                                <h3 className="text-lg font-semibold text-slate-900">
+                                                <div className="mx-auto flex size-12 items-center justify-center rounded-full bg-rose-700 text-rose-50">
+                                                    <Icon className="size-6" />
+                                                </div>
+                                                <p className="mt-4 text-sm font-semibold text-rose-200">
+                                                    Paso {index + 1}
+                                                </p>
+                                                <h3 className="mt-1 font-bold text-rose-50">
                                                     {step.title}
                                                 </h3>
-                                                <p className="mt-2 text-sm leading-6 text-slate-700">
+                                                <p className="mt-2 text-sm text-rose-200 leading-relaxed">
                                                     {step.description}
                                                 </p>
                                             </div>
-                                        ))}
-                                    </div>
+                                        );
+                                    })}
+                                </div>
+                            </div>
+                        </section>
+
+                        <section className="px-4 py-16">
+                            <div className="container mx-auto max-w-4xl">
+                                <div className="flex items-center gap-3 justify-center mb-8">
+                                    <IconHelp className="size-6 text-rose-300" />
+                                    <h2 className="text-2xl font-bold text-rose-50">
+                                        Preguntas frecuentes
+                                    </h2>
                                 </div>
 
-                                <div className="rounded-[2rem] border border-rose-200 bg-gradient-to-br from-rose-100 to-white p-6 shadow-lg shadow-rose-200/50 backdrop-blur-xl transition-all duration-300 lg:p-8">
-                                    <p className="text-sm font-semibold uppercase tracking-[0.3em] text-rose-700">
-                                        Beneficios del sistema
-                                    </p>
-                                    <div className="mt-6 space-y-4">
-                                        {benefits.map((benefit) => (
-                                            <div
-                                                key={benefit.title}
-                                                className="rounded-2xl border border-rose-200 bg-white/95 p-4 transition-all duration-300 hover:bg-white"
-                                            >
-                                                <h3 className="text-lg font-semibold text-slate-900">
-                                                    {benefit.title}
-                                                </h3>
-                                                <p className="mt-2 text-sm leading-6 text-slate-700">
-                                                    {benefit.text}
-                                                </p>
-                                            </div>
-                                        ))}
-                                    </div>
+                                <div className="grid gap-4 md:grid-cols-3">
+                                    {faqs.map((faq) => (
+                                        <div
+                                            key={faq.question}
+                                            className="rounded-xl border border-rose-800/50 bg-rose-900 p-5"
+                                        >
+                                            <h3 className="font-semibold text-rose-50">
+                                                {faq.question}
+                                            </h3>
+                                            <p className="mt-2 text-sm text-rose-100 leading-relaxed">
+                                                {faq.answer}
+                                            </p>
+                                        </div>
+                                    ))}
+                                </div>
+
+                                <div className="mt-8 rounded-xl border border-amber-700/40 bg-amber-900/40 p-4 text-center text-sm text-amber-100">
+                                    Recuerda: la Aportación Voluntaria fortalece
+                                    los servicios y espacios que usa toda la
+                                    comunidad estudiantil.
                                 </div>
                             </div>
                         </section>
                     </main>
 
-                    <footer className="border-t border-rose-200 py-6 text-center text-sm text-slate-600">
-                        <p>
-                            Todos los derechos reservados CBTis No. 211{" "}
-                            {new Date().getFullYear()} &mdash; Made with ❤ for
-                            Diego Meneses Pérez.
+                    <footer className="bg-rose-950/95 border-t border-rose-800/80">
+                        <p className="max-w-4xl text-sm text-center mx-auto px-4 py-4 text-rose-300">
+                            &copy; {new Date().getFullYear()} CBTis No. 211. Todos los derechos{" "}
+                            reservados. Hecho con ❤ por Diego Meneses.
                         </p>
                     </footer>
                 </div>
